@@ -1,8 +1,2 @@
 {
-    "ssh": {
-        "user": "git",
-        "public": "path-to-master-public-key",
-        "private": "path-to-master-private-key",
-        "passphrase": "key-matching-passphrase"
-    }
 }

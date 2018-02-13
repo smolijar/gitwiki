@@ -1,1 +1,6 @@
-Gitwiki
+= Gitwiki
+
+== Install (TODO)
+
+* Install gitolite
+* Add gitolite private ssh key via `ssh-add <path>`
