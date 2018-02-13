@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/grissius/gitwiki/issues"
   },
-  "homepage": "https://github.com/grissius/gitwiki#readme"
+  "homepage": "https://github.com/grissius/gitwiki#readme",
+  "dependencies": {
+    "nodegit": "^0.20.3"
+  }
 }
