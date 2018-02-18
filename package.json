@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/grissius/gitwiki#readme",
   "dependencies": {
+    "express": "^4.16.2",
+    "lodash": "^4.17.5",
     "next": "^5.0.0",
     "nodegit": "^0.20.3",
     "react": "^16.2.0",

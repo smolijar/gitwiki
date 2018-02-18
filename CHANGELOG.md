@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Local repository cloning
 - Repository browsing
+- Next.js
+- Express
+- Lodash
 
 ## [0.0.1] - 2018-02-13
 ### Added
