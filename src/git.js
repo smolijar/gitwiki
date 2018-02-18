@@ -1,10 +1,12 @@
 const NodeGit = require('nodegit');
 const path = require('path');
 
+const getLocalRepoWd = repoPath => `./tmp/${repoPath}`
+
 module.exports.getLocalRepository = (repoPath, user) => {
   // TODO check gitolite authorization
   const url = `git@localhost:${repoPath}`;
-  const dest = "./tmp";
+  const dest = getLocalRepoWd(repoPath);
   const cloneOpts = {};
   cloneOpts.fetchOpts = {
     callbacks: {
@@ -14,6 +16,12 @@ module.exports.getLocalRepository = (repoPath, user) => {
     }
   };
   return NodeGit.Clone(url, dest, cloneOpts)
+    .catch(e => {
+      // exists and is not an empty directory
+      if (e.errno === -4) {
+        return NodeGit.Repository.open(dest)
+      }
+    })
 }
 
 module.exports.browse = (repo, user, path = null) => {
