@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Next.js
 - Express
 - Lodash
+- Basic repository browsing interface
 
 ## [0.0.1] - 2018-02-13
 ### Added
