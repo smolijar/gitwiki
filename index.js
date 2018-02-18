@@ -12,7 +12,7 @@ const handle = app.getRequestHandler()
 app.prepare().then(() => {
   const server = express();
 
-  server.get('/repo/:repo/:ref*', (req, res) => {
+  server.get('/repo/:name/:ref*', (req, res) => {
     console.log(_.merge(req.params, {path: req.param(0)}));
     app.render(req, res, '/repo', _.merge(req.params, {path: req.param(0)}));
   })
