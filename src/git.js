@@ -1,5 +1,4 @@
 const NodeGit = require('nodegit');
-const path = require('path');
 
 const getLocalRepoWd = repoPath => `./tmp/${repoPath}`
 
