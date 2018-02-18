@@ -4,6 +4,7 @@
 const express = require('express');
 const next = require('next')
 const _ = require('lodash');
+const git = require('./src/git');
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
@@ -12,9 +13,19 @@ const handle = app.getRequestHandler()
 app.prepare().then(() => {
   const server = express();
 
+  const doPath = req => _.merge(req.params, {path: req.param(0).substr(1)});
+
   server.get('/repo/:name/:ref*', (req, res) => {
-    console.log(_.merge(req.params, {path: req.param(0)}));
-    app.render(req, res, '/repo', _.merge(req.params, {path: req.param(0)}));
+    app.render(req, res, '/repo', doPath(req));
+  })
+
+  server.get('/api/v1/repo/:name/:ref*', (req, res) => {
+    const params = doPath(req);
+    res.setHeader('Content-Type', 'application/json');
+    git.getLocalRepository('testing')
+      .then(repo => git.browse(repo, null, path = params.path))
+      .then(data => res.send(JSON.stringify(data)))
+      .catch(e => console.log(e));
   })
 
   server.get('*', (req, res) => {
