@@ -1,6 +1,6 @@
 const NodeGit = require('nodegit');
 
-const getLocalRepoWd = repoPath => `./tmp/${repoPath}`
+const getLocalRepoWd = repoPath => `/tmp/gitwiki/${repoPath}`
 
 module.exports.getLocalRepository = (repoPath, user) => {
   // TODO check gitolite authorization
