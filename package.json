@@ -4,7 +4,10 @@
   "description": "Gitwiki",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "next build",
+    "start": "NODE_ENV=production node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +20,9 @@
   },
   "homepage": "https://github.com/grissius/gitwiki#readme",
   "dependencies": {
-    "nodegit": "^0.20.3"
+    "next": "^5.0.0",
+    "nodegit": "^0.20.3",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   }
 }
