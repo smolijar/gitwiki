@@ -35,8 +35,12 @@ module.exports.browse = (repo, user, path = null) => {
     name: entry.name(),
     isDirectory: entry.isDirectory(),
   });
-  const formatTree = tree => tree.entries().map(formatEntry);
-  const formatBlob = entry => entry.getBlob().then(blob => _.merge(formatEntry(entry),{content: blob.toString()})).catch(e => console.log(e));
+  const base = {blob: null, tree: []};
+  const formatTree = tree => _.merge(base, {tree: tree.entries().map(formatEntry)});
+  const formatBlob = entry => entry.getBlob()
+    .then(blob => _.merge(base, {
+      blob: _.merge(formatEntry(entry), {content: blob.toString()})
+    }));
   return repo.getHeadCommit()
     .then(commit => commit.getTree())
     .then(tree => {
@@ -51,7 +55,6 @@ module.exports.browse = (repo, user, path = null) => {
                 .then(formatTree);
             }
           })
-
       }
       return formatTree(tree);
     })

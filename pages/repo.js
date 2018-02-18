@@ -13,7 +13,7 @@ export default class extends React.Component {
       method: 'GET',
     });
     const response = await res.text();
-    return { repo: {...req.params}, entry: JSON.parse(response) }
+    return { repo: {...req.params}, ...JSON.parse(response) }
   }
 
   render() {
@@ -24,7 +24,12 @@ export default class extends React.Component {
         <h1>{this.props.repo.name} <small>※ {this.props.repo.ref}</small></h1>
         <h2>🌲 {this.props.repo.path}</h2>
         {
-          this.props.entry.map((item,i) => <li key={i}><Link href={link(item)}>{item.name}</Link></li>)
+          this.props.tree.map((item,i) => <li key={i}><Link href={link(item)}>{item.name}</Link></li>)
+        }
+        {
+          this.props.blob && (
+            <pre>{this.props.blob.content}</pre>
+          )
         }
       </div>
     )
