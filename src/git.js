@@ -1,4 +1,5 @@
 const NodeGit = require('nodegit');
+const _ = require('lodash');
 
 const getLocalRepoWd = repoPath => `/tmp/gitwiki/${repoPath}`
 
@@ -30,8 +31,12 @@ module.exports.getLocalRepository = (repoPath, user) => {
 }
 
 module.exports.browse = (repo, user, path = null) => {
-  const formatTree = tree => tree.entries().map(e => e.path());
-  const formatBlob = entry => entry.path();
+  const formatEntry = entry => ({
+    name: entry.name(),
+    isDirectory: entry.isDirectory(),
+  });
+  const formatTree = tree => tree.entries().map(formatEntry);
+  const formatBlob = entry => entry.getBlob().then(blob => _.merge(formatEntry(entry),{content: blob.toString()})).catch(e => console.log(e));
   return repo.getHeadCommit()
     .then(commit => commit.getTree())
     .then(tree => {
