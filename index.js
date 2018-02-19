@@ -5,6 +5,7 @@ const express = require('express');
 const next = require('next')
 const _ = require('lodash');
 const git = require('./src/git');
+const path = require('path');
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
@@ -19,11 +20,13 @@ app.prepare().then(() => {
     app.render(req, res, '/repo', doPath(req));
   })
 
+  server.use('/antd', express.static(path.join(__dirname, '/node_modules/antd/dist')));
+
   server.get('/api/v1/repo/:name/:ref*', (req, res) => {
     const params = doPath(req);
     res.setHeader('Content-Type', 'application/json');
     git.getLocalRepository(params.name)
-      .then(repo => git.browse(repo, null, path = params.path))
+      .then(repo => git.browse(repo, null, params.path))
       .then(data => res.send(JSON.stringify(data)))
       .catch(e => console.log(e));
   })
