@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/grissius/gitwiki#readme",
   "dependencies": {
+    "antd": "^3.2.1",
     "express": "^4.16.2",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.5",
@@ -27,5 +28,9 @@
     "nodegit": "^0.20.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.6.5",
+    "babel-plugin-inline-import": "^2.0.6"
   }
 }
