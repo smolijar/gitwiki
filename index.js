@@ -5,6 +5,7 @@ const express = require('express');
 const next = require('next')
 const _ = require('lodash');
 const git = require('./src/git');
+const path = require('path');
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
@@ -18,6 +19,8 @@ app.prepare().then(() => {
   server.get('/repo/:name/:ref*', (req, res) => {
     app.render(req, res, '/repo', doPath(req));
   })
+
+  server.use('/antd', express.static(path.join(__dirname, '/node_modules/antd/dist')));
 
   server.get('/api/v1/repo/:name/:ref*', (req, res) => {
     const params = doPath(req);
