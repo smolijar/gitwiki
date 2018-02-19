@@ -23,7 +23,7 @@ app.prepare().then(() => {
     const params = doPath(req);
     res.setHeader('Content-Type', 'application/json');
     git.getLocalRepository(params.name)
-      .then(repo => git.browse(repo, null, path = params.path))
+      .then(repo => git.browse(repo, null, params.path))
       .then(data => res.send(JSON.stringify(data)))
       .catch(e => console.log(e));
   })
