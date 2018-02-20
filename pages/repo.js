@@ -1,8 +1,10 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch';
 import Link from 'next/link';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
+import Breadcrumb from '../components/Breadcrumb'
 import AppLayout from '../components/Layout';
+import { generateBrowsingLink } from '../src/routes';
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -22,13 +24,9 @@ export default class extends React.Component {
   }
 
   render() {
-    const link = item => '/repo/' + [this.props.repo.name, this.props.repo.ref, this.props.repo.path, item.name].filter(p => p !== '').join('/');
     return (
       <AppLayout>
-        <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>{this.props.repo.name} ※ {this.props.repo.ref}</Breadcrumb.Item>
-          {this.props.repo.path.split('/').map(fragment => <Breadcrumb.Item key={fragment}>{fragment}</Breadcrumb.Item>)}
-        </Breadcrumb>
+        <Breadcrumb repo={this.props.repo} />
         <Layout style={{ padding: '24px 0', background: '#fff' }}>
           <Sider width={200} style={{ background: '#fff' }}>
             <Menu
@@ -38,7 +36,7 @@ export default class extends React.Component {
               style={{ height: '100%' }}
             >
               {
-                this.props.tree.map((item, i) => <Menu.Item key={i}><Link href={link(item)}><a>{item.name}</a></Link></Menu.Item>)
+                this.props.tree.map((item, i) => <Menu.Item key={i}><Link href={generateBrowsingLink(this.props.repo, item.name)}><a>{item.name}</a></Link></Menu.Item>)
               }
             </Menu>
           </Sider>
