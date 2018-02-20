@@ -1,26 +1,37 @@
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
 import Link from 'next/link';
-import { Layout, Menu, Icon } from 'antd';
-import Breadcrumb from '../components/Breadcrumb'
+import { Layout, Menu } from 'antd';
+import Breadcrumb from '../components/Breadcrumb';
 import AppLayout from '../components/Layout';
 import { generateBrowsingLink } from '../src/routes';
-const { SubMenu } = Menu;
-const { Header, Content, Footer, Sider } = Layout;
+
+const {
+  Content, Sider,
+} = Layout;
 
 
 export default class extends React.Component {
+  static propTypes = {
+    repo: PropTypes.objectOf(PropTypes.string).isRequired,
+    tree: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+    blob: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+  }
+  static defaultProps = {
+    blob: null,
+  }
+
   static async getInitialProps({ req }) {
     let uri = `/api/v1/repo/${req.params.name}/${req.params.ref}/${req.params.path}`;
     if (req) {
       uri = `${req.protocol}://${req.get('host')}${uri}`;
     }
-    console.log(uri);
     const res = await fetch(uri, {
       method: 'GET',
     });
     const response = await res.text();
-    return { repo: { ...req.params }, ...JSON.parse(response) }
+    return { repo: { ...req.params }, ...JSON.parse(response) };
   }
 
   render() {
@@ -36,7 +47,13 @@ export default class extends React.Component {
               style={{ height: '100%' }}
             >
               {
-                this.props.tree.map((item, i) => <Menu.Item key={i}><Link href={generateBrowsingLink(this.props.repo, item.name)}><a>{item.name}</a></Link></Menu.Item>)
+                this.props.tree.map(item => (
+                  <Menu.Item key={item.name}>
+                    <Link href={generateBrowsingLink(this.props.repo, item.name)}>
+                      <a>{item.name}</a>
+                    </Link>
+                  </Menu.Item>
+                ))
               }
             </Menu>
           </Sider>
@@ -49,6 +66,6 @@ export default class extends React.Component {
           </Content>
         </Layout>
       </AppLayout>
-    )
+    );
   }
 }
