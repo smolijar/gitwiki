@@ -3,6 +3,7 @@ const next = require('next');
 const _ = require('lodash');
 const git = require('./src/git');
 const path = require('path');
+const logger = require('./src/logger');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -25,7 +26,7 @@ app.prepare().then(() => {
     git.getLocalRepository(params.name)
       .then(repo => git.browse(repo, params.path))
       .then(data => res.send(JSON.stringify(data)))
-      .catch(e => console.log(e));
+      .catch(e => logger.error(e));
   });
 
   server.get('*', (req, res) => {
@@ -34,6 +35,6 @@ app.prepare().then(() => {
 
   server.listen(3000, (err) => {
     if (err) throw err;
-    console.log('> Ready on http://localhost:3000');
+    logger.info('> Ready on http://localhost:3000');
   });
 });
