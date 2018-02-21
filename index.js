@@ -22,10 +22,9 @@ app.prepare().then(() => {
 
   server.get('/api/v1/repo/tree/:name/:ref*', (req, res) => {
     const params = doPath(req);
-    res.setHeader('Content-Type', 'application/json');
     git.getLocalRepository(params.name)
       .then(repo => git.browse(repo, params.path))
-      .then(data => res.send(JSON.stringify(data)))
+      .then(data => res.json(data))
       .catch(e => logger.error(e));
   });
 
