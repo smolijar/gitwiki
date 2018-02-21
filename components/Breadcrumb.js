@@ -13,7 +13,7 @@ const getCrumbs = (repo) => {
       const query = { ...repo, path: prefix };
       return (
         <Breadcrumb.Item key={fragment}>
-          <Link href={{ pathname: '/repo', query }} as={generateBrowsingLink(query)}>
+          <Link href={{ pathname: '/repo/tree', query }} as={generateBrowsingLink(query)}>
             {fragment}
           </Link>
         </Breadcrumb.Item>
@@ -32,7 +32,7 @@ export default class extends React.PureComponent {
       <Layout>
         <Breadcrumb style={{ margin: '16px 0' }}>
           <Breadcrumb.Item>
-            <Link href={{ pathname: '/repo', query }} as={generateBrowsingLink(query)}>
+            <Link href={{ pathname: '/repo/tree', query }} as={generateBrowsingLink(query)}>
               <a>{repo.name} ※ {repo.ref}</a>
             </Link>
           </Breadcrumb.Item>

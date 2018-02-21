@@ -4,9 +4,9 @@ import fetch from 'isomorphic-fetch';
 import Link from 'next/link';
 import path from 'path';
 import { Layout, Menu } from 'antd';
-import Breadcrumb from '../components/Breadcrumb';
-import AppLayout from '../components/Layout';
-import { generateBrowsingLink } from '../src/routes';
+import Breadcrumb from '../../components/Breadcrumb';
+import AppLayout from '../../components/Layout';
+import { generateBrowsingLink } from '../../src/routes';
 
 const {
   Content, Sider,
@@ -24,7 +24,7 @@ export default class extends React.Component {
   }
 
   static async getInitialProps({ req, query }) {
-    let uri = `/api/v1/repo/${query.name}/${query.ref}/${query.path}`;
+    let uri = `/api/v1/repo/tree/${query.name}/${query.ref}/${query.path}`;
     if (req) {
       uri = `${req.protocol}://${req.get('host')}${uri}`;
     }
@@ -53,7 +53,7 @@ export default class extends React.Component {
                   const entryRepo = { ...this.props.repo, path: withEntry };
                   return (
                     <Menu.Item key={item.name}>
-                      <Link href={{ pathname: '/repo', query: entryRepo }} as={generateBrowsingLink(entryRepo)}>
+                      <Link href={{ pathname: '/repo/tree', query: entryRepo }} as={generateBrowsingLink(entryRepo)}>
                         <a>{item.name}</a>
                       </Link>
                     </Menu.Item>

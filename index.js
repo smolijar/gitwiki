@@ -13,13 +13,13 @@ app.prepare().then(() => {
 
   const doPath = req => _.merge(req.params, { path: req.param(0).substr(1) });
 
-  server.get('/repo/:name/:ref*', (req, res) => {
-    app.render(req, res, '/repo', doPath(req));
+  server.get('/repo/tree/:name/:ref*', (req, res) => {
+    app.render(req, res, '/repo/tree', doPath(req));
   });
 
   server.use('/antd', express.static(path.join(__dirname, '/node_modules/antd/dist')));
 
-  server.get('/api/v1/repo/:name/:ref*', (req, res) => {
+  server.get('/api/v1/repo/tree/:name/:ref*', (req, res) => {
     const params = doPath(req);
     res.setHeader('Content-Type', 'application/json');
     git.getLocalRepository(params.name)
