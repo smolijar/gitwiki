@@ -1,6 +1,5 @@
 const express = require('express');
 const next = require('next');
-const _ = require('lodash');
 const git = require('./src/git');
 const path = require('path');
 const logger = require('./src/logger');
@@ -12,18 +11,17 @@ const handle = app.getRequestHandler();
 app.prepare().then(() => {
   const server = express();
 
-  const doPath = req => _.merge(req.params, { path: req.param(0).substr(1) });
-
-  server.get('/repo/tree/:name/:ref*', (req, res) => {
-    app.render(req, res, '/repo/tree', doPath(req));
+  server.get('/repo/tree/:name/:ref/:path([\\S\\s]+)?', (req, res) => {
+    req.params.path = req.params.path || '';
+    app.render(req, res, '/repo/tree', req.params);
   });
 
   server.use('/antd', express.static(path.join(__dirname, '/node_modules/antd/dist')));
 
-  server.get('/api/v1/repo/tree/:name/:ref*', (req, res) => {
-    const params = doPath(req);
-    git.getLocalRepository(params.name)
-      .then(repo => git.browse(repo, params.path))
+  server.get('/api/v1/repo/tree/:name/:ref/:path([\\S\\s]+)?', (req, res) => {
+    req.params.path = req.params.path || '';
+    git.getLocalRepository(req.params.name)
+      .then(repo => git.browse(repo, req.params.path))
       .then(data => res.json(data))
       .catch(e => logger.error(e));
   });
