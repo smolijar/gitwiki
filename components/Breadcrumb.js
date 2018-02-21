@@ -14,7 +14,7 @@ const getCrumbs = (repo) => {
       return (
         <Breadcrumb.Item key={fragment}>
           <Link href={{ pathname: '/repo/tree', query }} as={generateBrowsingLink(query)}>
-            {fragment}
+            <a>{fragment}</a>
           </Link>
         </Breadcrumb.Item>
       );
