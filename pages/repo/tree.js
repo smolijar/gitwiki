@@ -16,8 +16,8 @@ const {
 export default class extends React.Component {
   static propTypes = {
     repo: PropTypes.objectOf(PropTypes.string).isRequired,
-    tree: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-    blob: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+    tree: PropTypes.arrayOf(PropTypes.object).isRequired,
+    blob: PropTypes.objectOf(PropTypes.string),
   }
   static defaultProps = {
     blob: null,

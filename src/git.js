@@ -40,7 +40,7 @@ module.exports.browse = (repo, path = null) => {
   const formatTree = tree => _.merge(base, { tree: tree.entries().map(formatEntry) });
   const formatBlob = entry => entry.getBlob()
     .then(blob => _.merge(base, {
-      blob: _.merge(formatEntry(entry), { content: blob.toString() }),
+      blob: { name: entry.name(), content: blob.toString() },
     }));
   return repo.getHeadCommit()
     .then(commit => commit.getTree())
