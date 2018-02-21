@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
 import Link from 'next/link';
+import path from 'path';
 import { Layout, Menu } from 'antd';
 import Breadcrumb from '../components/Breadcrumb';
 import AppLayout from '../components/Layout';
@@ -22,8 +23,8 @@ export default class extends React.Component {
     blob: null,
   }
 
-  static async getInitialProps({ req }) {
-    let uri = `/api/v1/repo/${req.params.name}/${req.params.ref}/${req.params.path}`;
+  static async getInitialProps({ req, query }) {
+    let uri = `/api/v1/repo/${query.name}/${query.ref}/${query.path}`;
     if (req) {
       uri = `${req.protocol}://${req.get('host')}${uri}`;
     }
@@ -31,7 +32,7 @@ export default class extends React.Component {
       method: 'GET',
     });
     const response = await res.text();
-    return { repo: { ...req.params }, ...JSON.parse(response) };
+    return { repo: { ...query }, ...JSON.parse(response) };
   }
 
   render() {
@@ -47,13 +48,17 @@ export default class extends React.Component {
               style={{ height: '100%' }}
             >
               {
-                this.props.tree.map(item => (
-                  <Menu.Item key={item.name}>
-                    <Link href={generateBrowsingLink(this.props.repo, item.name)}>
-                      <a>{item.name}</a>
-                    </Link>
-                  </Menu.Item>
-                ))
+                this.props.tree.map((item) => {
+                  const withEntry = path.join(this.props.repo.path, item.name);
+                  const entryRepo = { ...this.props.repo, path: withEntry };
+                  return (
+                    <Menu.Item key={item.name}>
+                      <Link href={{ pathname: '/repo', query: entryRepo }} as={generateBrowsingLink(entryRepo)}>
+                        <a>{item.name}</a>
+                      </Link>
+                    </Menu.Item>
+                  );
+                })
               }
             </Menu>
           </Sider>
