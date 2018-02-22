@@ -4,16 +4,19 @@ import fetch from 'isomorphic-fetch';
 import Link from 'next/link';
 import path from 'path';
 import { Layout, Menu } from 'antd';
+import { connect } from 'react-redux';
 import Breadcrumb from '../../components/Breadcrumb';
 import AppLayout from '../../components/Layout';
 import { generateBrowsingLink } from '../../src/routes';
+import withRedux from '../../redux/withRedux';
+import actions from '../../redux/actions/actions';
 
 const {
   Content, Sider,
 } = Layout;
 
 
-export default class extends React.Component {
+class Tree extends React.Component {
   static propTypes = {
     repo: PropTypes.objectOf(PropTypes.string).isRequired,
     tree: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -38,6 +41,10 @@ export default class extends React.Component {
   render() {
     return (
       <AppLayout>
+        <button onClick={() => this.props.helloWorld()}>World</button>
+        <button onClick={() => this.props.helloName('Alice')}>Alice</button>
+        <button onClick={() => this.props.helloName('Bob')}>Bob</button>
+        <button onClick={() => this.props.helloFetch()}>Fetch</button>
         <Breadcrumb repo={this.props.repo} />
         <Layout style={{ padding: '24px 0', background: '#fff' }}>
           <Sider width={200} style={{ background: '#fff' }}>
@@ -74,3 +81,12 @@ export default class extends React.Component {
     );
   }
 }
+
+export default withRedux()(connect(
+  state => ({ helloState: state.hello }),
+  {
+    helloWorld: actions.hello.world,
+    helloName: actions.hello.name,
+    helloFetch: actions.hello.api.fetch,
+  },
+)(Tree));
