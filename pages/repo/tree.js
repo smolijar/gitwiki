@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import fetch from 'isomorphic-fetch';
 import Link from 'next/link';
 import path from 'path';
 import { Layout, Menu } from 'antd';
 import { connect } from 'react-redux';
 import Breadcrumb from '../../components/Breadcrumb';
 import AppLayout from '../../components/Layout';
-import { generateBrowsingLink } from '../../src/routes';
+import { fetchApi, generateBrowsingLink } from '../../src/routes';
 import withRedux from '../../redux/withRedux';
 import actions from '../../redux/actions/actions';
 
@@ -18,34 +17,23 @@ const {
 
 class Tree extends React.Component {
   static propTypes = {
-    repo: PropTypes.objectOf(PropTypes.string).isRequired,
-    tree: PropTypes.arrayOf(PropTypes.object).isRequired,
-    blob: PropTypes.objectOf(PropTypes.string),
-  }
-  static defaultProps = {
-    blob: null,
+    repo: PropTypes.shape({
+      meta: PropTypes.objectOf(PropTypes.string).isRequired,
+      tree: PropTypes.arrayOf(PropTypes.object).isRequired,
+      blob: PropTypes.objectOf(PropTypes.string),
+    }).isRequired,
   }
 
-  static async getInitialProps({ req, query }) {
-    let uri = `/api/v1/repo/tree/${query.name}/${query.ref}/${query.path}`;
-    if (req) {
-      uri = `${req.protocol}://${req.get('host')}${uri}`;
-    }
-    const res = await fetch(uri, {
-      method: 'GET',
-    });
-    const response = await res.text();
-    return { repo: { ...query }, ...JSON.parse(response) };
+  static async getInitialProps({ req, query, store }) {
+    store.dispatch(actions.repo.setRepo(query));
+    const response = await fetchApi(generateBrowsingLink(query), { req });
+    store.dispatch(actions.repo.setTree(response));
   }
 
   render() {
     return (
       <AppLayout>
-        <button onClick={() => this.props.helloWorld()}>World</button>
-        <button onClick={() => this.props.helloName('Alice')}>Alice</button>
-        <button onClick={() => this.props.helloName('Bob')}>Bob</button>
-        <button onClick={() => this.props.helloFetch()}>Fetch</button>
-        <Breadcrumb repo={this.props.repo} />
+        <Breadcrumb repo={this.props.repo.meta} />
         <Layout style={{ padding: '24px 0', background: '#fff' }}>
           <Sider width={200} style={{ background: '#fff' }}>
             <Menu
@@ -55,9 +43,9 @@ class Tree extends React.Component {
               style={{ height: '100%' }}
             >
               {
-                this.props.tree.map((item) => {
-                  const withEntry = path.join(this.props.repo.path, item.name);
-                  const entryRepo = { ...this.props.repo, path: withEntry };
+                this.props.repo.tree.map((item) => {
+                  const withEntry = path.join(this.props.repo.meta.path, item.name);
+                  const entryRepo = { ...this.props.repo.meta, path: withEntry };
                   return (
                     <Menu.Item key={item.name}>
                       <Link href={{ pathname: '/repo/tree', query: entryRepo }} as={generateBrowsingLink(entryRepo)}>
@@ -71,8 +59,8 @@ class Tree extends React.Component {
           </Sider>
           <Content style={{ padding: '0 24px', minHeight: 280 }}>
             {
-              this.props.blob && (
-                <pre>{this.props.blob.content}</pre>
+              this.props.repo.blob && (
+                <pre>{this.props.repo.blob.content}</pre>
               )
             }
           </Content>
@@ -82,11 +70,4 @@ class Tree extends React.Component {
   }
 }
 
-export default withRedux()(connect(
-  state => ({ helloState: state.hello }),
-  {
-    helloWorld: actions.hello.world,
-    helloName: actions.hello.name,
-    helloFetch: actions.hello.api.fetch,
-  },
-)(Tree));
+export default withRedux()(connect(state => ({ repo: state.repo }), null)(Tree));
