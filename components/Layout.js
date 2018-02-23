@@ -3,11 +3,17 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Layout, Menu, Icon } from 'antd';
+import NProgress from 'nprogress';
+import Router from 'next/router';
 
 const {
   Header, Content, Footer,
 } = Layout;
 
+
+Router.onRouteChangeStart = NProgress.start;
+Router.onRouteChangeComplete = NProgress.done;
+Router.onRouteChangeError = NProgress.done;
 
 export default class extends React.PureComponent {
   static propTypes = {
@@ -24,6 +30,7 @@ export default class extends React.PureComponent {
       <Layout>
         <Head>
           <link rel="stylesheet" type="text/css" href="/antd/antd.css" />
+          <link rel="stylesheet" type="text/css" href="/nprogress/nprogress.css" />
         </Head>
         <Header className="header">
           <div className="logo">
