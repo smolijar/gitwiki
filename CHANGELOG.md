@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Redux
 - Redux sagas
+- Page loading indication
 
 ## [0.2.0] - 2018-02-21
 ### Added
