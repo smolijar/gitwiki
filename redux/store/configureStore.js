@@ -18,7 +18,10 @@ export default (initialState = {}) => {
     composeEnhancers(applyMiddleware(...middleware)),
   );
 
-  store.sagaTask = saga.run(rootSaga);
+  store.runSagaTask = () => {
+    store.sagaTask = saga.run(rootSaga);
+  };
+  store.runSagaTask();
 
   return store;
 };
