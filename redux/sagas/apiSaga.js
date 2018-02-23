@@ -1,16 +1,15 @@
 import { takeLatest, put, all } from 'redux-saga/effects';
-import fetch from 'isomorphic-fetch';
+import { fetchApi, generateBrowsingLink } from '../../src/routes';
 import types from '../actions/types';
 import actions from '../actions/actions';
 
-export function* helloFetch() {
-  const data = yield fetch('/api/v1/repo/tree/testing/master')
-    .then(res => res.json());
-  yield put(actions.hello.api.done(data));
+export function* fetchTree(action) {
+  const data = yield fetchApi(generateBrowsingLink(action.data));
+  yield put(actions.repo.setTree(data));
 }
 
 export default function* () {
   yield all([
-    takeLatest(types.hello.api.HELLO_API_FETCH, helloFetch),
+    takeLatest(types.repo.FETCH_TREE, fetchTree),
   ]);
 }
