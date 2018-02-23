@@ -1,7 +1,8 @@
 import React from 'react';
 import AppLayout from '../components/Layout';
+import withRedux from '../redux/withRedux';
 
-export default () => (
+const Index = () => (
   <AppLayout>
     <div style={{ textAlign: 'center' }}>
       <h1>General Kenobi!</h1>
@@ -9,3 +10,5 @@ export default () => (
     </div>
   </AppLayout>
 );
+
+export default withRedux()(Index);
