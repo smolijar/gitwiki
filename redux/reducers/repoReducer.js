@@ -1,6 +1,10 @@
 import types from '../actions/types';
 
-const initialState = {};
+const initialState = {
+  meta: null,
+  tree: [],
+  blob: null,
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
