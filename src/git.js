@@ -38,18 +38,22 @@ module.exports.browse = (repo, treePath = null) => {
     isDirectory: entry.isDirectory(),
   });
   const formatTree = tree => ({ tree: tree.entries().map(formatEntry) });
-  const formatBlob = (blobEntry, rootTree) => Promise.all([
-    blobEntry.getBlob()
-      .then(blob => ({ ...formatEntry(blobEntry), content: blob.toString() })),
-    path.parse(treePath).dir === '' ? Promise.resolve(formatTree(rootTree)) : rootTree.getEntry(path.parse(treePath).dir)
-      .then(entry => entry.getTree())
-      .then(formatTree),
-  ])
-    .then(([blob, tree]) => ({ blob, tree: tree.tree }));
+  const formatBlob = (blobEntry, rootTree) => {
+    const dirPath = path.parse(treePath).dir;
+    return Promise.all([
+      blobEntry.getBlob()
+        .then(blob => ({ ...formatEntry(blobEntry), content: blob.toString() })),
+      dirPath === '' ? Promise.resolve(formatTree(rootTree)) : rootTree.getEntry(dirPath)
+        .then(entry => entry.getTree())
+        .then(formatTree),
+    ])
+      .then(([blob, { tree }]) => ({ blob, tree }));
+  };
 
   return repo.getHeadCommit()
     .then(commit => commit.getTree())
     .then((tree) => {
+      // if treePath is null, stay on root
       if (!treePath) return formatTree(tree);
       return tree.getEntry(treePath)
         .then((entry) => {
