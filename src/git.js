@@ -1,5 +1,5 @@
 const NodeGit = require('nodegit');
-const _ = require('lodash');
+const path = require('path');
 
 const getLocalRepoWd = repoPath => `/tmp/gitwiki/${repoPath}`;
 
@@ -21,7 +21,7 @@ module.exports.getLocalRepository = (repoPath) => {
       // exists and is not an empty directory
       if (e.errno === -4) {
         return NodeGit.Repository.open(dest)
-        // fetch does not return repo, must store
+          // fetch does not return repo, must store
           .then((repo) => { repository = repo; return repo; })
           .then(repo => repo.fetchAll(cloneOpts.fetchOpts))
           .then(() => repository.mergeBranches('master', 'origin/master'))
@@ -31,30 +31,37 @@ module.exports.getLocalRepository = (repoPath) => {
     });
 };
 
-module.exports.browse = (repo, path = null) => {
+module.exports.browse = (repo, treePath = null) => {
   const formatEntry = entry => ({
     name: entry.name(),
+    path: entry.path(),
     isDirectory: entry.isDirectory(),
   });
-  const base = { blob: null, tree: [] };
-  const formatTree = tree => _.merge(base, { tree: tree.entries().map(formatEntry) });
-  const formatBlob = entry => entry.getBlob()
-    .then(blob => _.merge(base, {
-      blob: { name: entry.name(), content: blob.toString() },
-    }));
+  const formatTree = tree => ({ tree: tree.entries().map(formatEntry) });
+  const formatBlob = (blobEntry, rootTree) => {
+    const dirPath = path.parse(treePath).dir;
+    return Promise.all([
+      blobEntry.getBlob()
+        .then(blob => ({ ...formatEntry(blobEntry), content: blob.toString() })),
+      dirPath === '' ? Promise.resolve(formatTree(rootTree)) : rootTree.getEntry(dirPath)
+        .then(entry => entry.getTree())
+        .then(formatTree),
+    ])
+      .then(([blob, { tree }]) => ({ blob, tree }));
+  };
+
   return repo.getHeadCommit()
     .then(commit => commit.getTree())
     .then((tree) => {
-      if (path) {
-        return tree.getEntry(path)
-          .then((entry) => {
-            if (entry.isBlob()) {
-              return formatBlob(entry);
-            }
-            return entry.getTree()
-              .then(formatTree);
-          });
-      }
-      return formatTree(tree);
+      // if treePath is null, stay on root
+      if (!treePath) return formatTree(tree);
+      return tree.getEntry(treePath)
+        .then((entry) => {
+          if (entry.isBlob()) {
+            return formatBlob(entry, tree);
+          }
+          return entry.getTree()
+            .then(formatTree);
+        });
     });
 };
