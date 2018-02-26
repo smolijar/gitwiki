@@ -4,7 +4,7 @@
   "description": "Gitwiki",
   "main": "index.js",
   "scripts": {
-    "dev": "node index.js",
+    "dev": "nodemon server/index.js -w server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "next build",
     "lint": "./node_modules/eslint/bin/eslint.js .",
