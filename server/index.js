@@ -28,6 +28,13 @@ app.prepare().then(() => {
       .catch(e => logger.error(e));
   });
 
+  server.get('/api/v1/repo/refs/:name', (req, res) => {
+    git.getLocalRepository(req.params.name)
+      .then(repo => git.refs(repo))
+      .then(data => res.json(data))
+      .catch(e => logger.error(e));
+  });
+
   server.get('*', (req, res) => {
     handle(req, res);
   });

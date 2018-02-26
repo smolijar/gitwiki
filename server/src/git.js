@@ -32,6 +32,13 @@ module.exports.getLocalRepository = (repoPath) => {
     });
 };
 
+module.exports.refs = repo => repo
+  .getReferenceNames(NodeGit.Reference.TYPE.LISTALL)
+  .then(refs => refs.map((ref) => {
+    const [, group, name] = ref.split('/');
+    return { ref, group, name };
+  }));
+
 module.exports.browse = (repo, treePath = null) => {
   const formatEntry = entry => ({
     name: entry.name(),
