@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import path from 'path';
 import { Layout, Menu } from 'antd';
 import { connect } from 'react-redux';
 import Breadcrumb from '../../components/Breadcrumb';
@@ -44,8 +43,7 @@ class Tree extends React.Component {
             >
               {
                 this.props.repo.tree.map((item) => {
-                  const withEntry = path.join(this.props.repo.meta.path, item.name);
-                  const entryRepo = { ...this.props.repo.meta, path: withEntry };
+                  const entryRepo = { ...this.props.repo.meta, path: item.path };
                   return (
                     <Menu.Item key={item.name}>
                       <Link href={{ pathname: '/repo/tree', query: entryRepo }} as={generateBrowsingLink(entryRepo)}>
