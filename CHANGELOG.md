@@ -10,9 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Redux sagas
 - Page loading indication
 - Nodemon
+- File icons in tree
 
 ## Fixed
 - Tree preview on blob
+- Tree entry list sort
 
 ## [0.2.0] - 2018-02-21
 ### Added
