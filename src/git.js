@@ -1,5 +1,6 @@
 const NodeGit = require('nodegit');
 const _ = require('lodash');
+const path = require('path');
 
 const getLocalRepoWd = repoPath => `/tmp/gitwiki/${repoPath}`;
 
@@ -31,9 +32,10 @@ module.exports.getLocalRepository = (repoPath) => {
     });
 };
 
-module.exports.browse = (repo, path = null) => {
+module.exports.browse = (repo, treePath = null) => {
   const formatEntry = entry => ({
     name: entry.name(),
+    path: entry.path(),
     isDirectory: entry.isDirectory(),
   });
   const base = { blob: null, tree: [] };
@@ -45,16 +47,20 @@ module.exports.browse = (repo, path = null) => {
   return repo.getHeadCommit()
     .then(commit => commit.getTree())
     .then((tree) => {
-      if (path) {
-        return tree.getEntry(path)
-          .then((entry) => {
-            if (entry.isBlob()) {
-              return formatBlob(entry);
-            }
-            return entry.getTree()
-              .then(formatTree);
-          });
-      }
-      return formatTree(tree);
+      if (!treePath) return formatTree(tree);
+      return tree.getEntry(treePath)
+        .then((entry) => {
+          if (entry.isBlob()) {
+            return Promise.all([
+              formatBlob(entry),
+              tree.getEntry(path.normalize(`${treePath}/..`))
+                .then(entry => entry.getTree())
+                .then(formatTree),
+            ])
+              .then(([blob, tree]) => ({ blob: blob.blob, tree: tree.tree }));
+          }
+          return entry.getTree()
+            .then(formatTree);
+        });
     });
 };
