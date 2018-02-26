@@ -1,5 +1,6 @@
 const NodeGit = require('nodegit');
 const path = require('path');
+const _ = require('lodash');
 
 const getLocalRepoWd = repoPath => `/tmp/gitwiki/${repoPath}`;
 
@@ -37,7 +38,7 @@ module.exports.browse = (repo, treePath = null) => {
     path: entry.path(),
     isDirectory: entry.isDirectory(),
   });
-  const formatTree = tree => ({ tree: tree.entries().map(formatEntry) });
+  const formatTree = tree => ({ tree: _.orderBy(tree.entries().map(formatEntry), ['isDirectory', 'name'], ['desc', 'asc']) });
   const formatBlob = (blobEntry, rootTree) => {
     const dirPath = path.parse(treePath).dir;
     return Promise.all([

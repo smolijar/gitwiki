@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Layout, Menu } from 'antd';
 import { connect } from 'react-redux';
+import icons from 'file-icons-js';
 import Breadcrumb from '../../components/Breadcrumb';
 import AppLayout from '../../components/Layout';
 import { fetchApi, generateBrowsingLink } from '../../src/routes';
@@ -13,6 +14,10 @@ const {
   Content, Sider,
 } = Layout;
 
+const getIconClass = (entry) => {
+  if (entry.isDirectory) return 'directory';
+  return icons.getClassWithColor(entry.name) || 'file';
+};
 
 class Tree extends React.Component {
   static propTypes = {
@@ -47,7 +52,7 @@ class Tree extends React.Component {
                   return (
                     <Menu.Item key={item.name}>
                       <Link href={{ pathname: '/repo/tree', query: entryRepo }} as={generateBrowsingLink(entryRepo)}>
-                        <a>{item.name}</a>
+                        <a><span className={`${getIconClass(item)} node`}> {item.name}</span></a>
                       </Link>
                     </Menu.Item>
                   );
@@ -63,6 +68,23 @@ class Tree extends React.Component {
             }
           </Content>
         </Layout>
+        <style jsx global>{`
+        span.node {
+          color: rgba(0, 0, 0, 0.65);
+        }
+        span.node.file:before, span.node.directory:before {
+          color: red;
+          font-family: "anticon" !important;
+          color: rgba(0, 0, 0, 0.65);
+        }
+        span.node.file::before {
+          content: "\\E664";
+        }
+        span.node.directory::before {
+          content: "\\E662";
+        }
+        `}
+        </style>
       </AppLayout>
     );
   }
