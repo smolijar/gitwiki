@@ -39,7 +39,11 @@ module.exports.refs = repo => repo
     return { ref, group, name };
   }));
 
-module.exports.browse = (repo, treePath = null) => {
+module.exports.findRef = (repo, name) => module.exports
+  .refs(repo)
+  .then(refs => refs.find(r => r.name === name));
+
+module.exports.browse = (repo, treePath = null, ref = null) => {
   const formatEntry = entry => ({
     name: entry.name(),
     path: entry.path(),
@@ -58,8 +62,12 @@ module.exports.browse = (repo, treePath = null) => {
       .then(([blob, { tree }]) => ({ blob, tree }));
   };
 
-  return repo.getHeadCommit()
-    .then(commit => commit.getTree())
+  const commit = ref ? module.exports
+    .findRef(repo, ref)
+    .then(r => repo.getReferenceCommit(r.ref)) : repo.getHeadCommit();
+
+  return commit
+    .then(rev => rev.getTree())
     .then((tree) => {
       // if treePath is null, stay on root
       if (!treePath) return formatTree(tree);
