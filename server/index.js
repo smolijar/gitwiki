@@ -16,8 +16,8 @@ app.prepare().then(() => {
     app.render(req, res, '/repo/tree', req.params);
   });
 
-  server.use('/antd', express.static(path.join(__dirname, '/node_modules/antd/dist')));
-  server.use('/nprogress', express.static(path.join(__dirname, '/node_modules/nprogress')));
+  server.use('/antd', express.static(path.join(__dirname, '../node_modules/antd/dist')));
+  server.use('/nprogress', express.static(path.join(__dirname, '../node_modules/nprogress')));
 
   server.get('/api/v1/repo/tree/:name/:ref/:path([\\S\\s]+)?', (req, res) => {
     req.params.path = req.params.path || '';
