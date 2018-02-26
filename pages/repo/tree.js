@@ -19,7 +19,7 @@ class Tree extends React.Component {
     repo: PropTypes.shape({
       meta: PropTypes.objectOf(PropTypes.string).isRequired,
       tree: PropTypes.arrayOf(PropTypes.object).isRequired,
-      blob: PropTypes.objectOf(PropTypes.string),
+      blob: PropTypes.object,
     }).isRequired,
   }
 
