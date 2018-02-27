@@ -64,7 +64,7 @@ module.exports.browse = (repo, treePath = null, ref = null) => {
 
   const commit = ref ? module.exports
     .findRef(repo, ref)
-    .then(r => repo.getReferenceCommit(r.ref)) : repo.getHeadCommit();
+    .then(r => repo.getReferenceCommit(_.get(r, 'ref', ref))) : repo.getHeadCommit();
 
   return commit
     .then(rev => rev.getTree())
