@@ -1,7 +1,7 @@
 const logger = require('../src/logger');
 const git = require('../src/git');
 
-module.exports = (server, app) => {
+module.exports = (server) => {
   server.get('/api/v1/repo/tree/:name/:ref/:path([\\S\\s]+)?', (req, res) => {
     req.params.path = req.params.path || '';
     git.getLocalRepository(req.params.name)

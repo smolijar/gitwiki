@@ -5,9 +5,9 @@ const apiRoutes = require('./api');
 module.exports = (server, app) => {
   const handle = app.getRequestHandler();
 
-  staticRoutes(server, app);
   nextRoutes(server, app);
-  apiRoutes(server, app);
+  staticRoutes(server);
+  apiRoutes(server);
 
   server.get('*', (req, res) => {
     handle(req, res);
