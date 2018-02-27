@@ -19,23 +19,24 @@ export default class References extends React.PureComponent {
     const menu = (
       <Menu>
         {
-          this.props.refs.map((ref) => {
-            const query = { ...this.props.repo, ref: ref.name };
-            return (
-              <Menu.Item key={ref.name}>
-                <Link href={{ pathname: '/repo/tree', query }} as={generateBrowsingLink(query)}>
-                  <a>{ref.name}</a>
-                </Link>
-              </Menu.Item>
-            );
-          })
+          this.props.refs
+            .map((ref) => {
+              const query = { ...this.props.repo, ref: ref.name };
+              return (
+                <Menu.Item disabled={ref.name === this.props.repo.ref} key={ref.name}>
+                  <Link href={{ pathname: '/repo/tree', query }} as={generateBrowsingLink(query)}>
+                    <span>{ref.name}</span>
+                  </Link>
+                </Menu.Item>
+              );
+            })
         }
       </Menu>
     );
 
     return (
       <Dropdown overlay={menu}>
-        <a className="ant-dropdown-link" href="#">
+        <a className="ant-dropdown-link">
           {this.props.repo.ref}
         </a>
       </Dropdown>
