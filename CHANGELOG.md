@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Reference listing API
+- ReferenceContainer for ref switching
+
+### Changed
+- Refactor routing
+- Seperate fetchApi function from routing
 
 ## [0.3.0] - 2018-02-26
 ### Added
