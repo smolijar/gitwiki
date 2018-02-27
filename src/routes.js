@@ -1,16 +1,17 @@
-module.exports.endpoints = {
+const endpoints = {
   TREE: 'TREE',
   REFS: 'REFS',
 };
 
-module.exports.generate = (endpoint) => {
-  switch (endpoint) {
-    case module.exports.endpoints.TREE:
-      return ({ name, ref, path }) => `/repo/tree/${[name, ref, path].filter(p => p !== '').join('/')}`;
-    case module.exports.endpoints.REFS:
-      return ({ name }) => `/repo/refs/${name}`;
-    default:
-      throw new Error(`Unknown endpoint ${endpoint}`);
-  }
+module.exports.endpoints = endpoints;
+
+const routes = {
+  [endpoints.TREE]: {
+    generate: ({ name, ref, path }) => `/repo/tree/${[name, ref, path].filter(p => p !== '').join('/')}`,
+  },
+  [endpoints.REFS]: {
+    generate: ({ name }) => `/repo/refs/${name}`,
+  },
 };
 
+module.exports.generate = endpoint => routes[endpoint].generate;
