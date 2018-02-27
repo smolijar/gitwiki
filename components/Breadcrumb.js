@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Layout, Breadcrumb } from 'antd';
 import _ from 'lodash';
-import { generateBrowsingLink } from '../src/routes';
+import { generate, endpoints } from '../src/routes';
 import ReferencesContainer from '../containers/ReferencesContainer';
 
 
@@ -14,7 +14,7 @@ const getCrumbs = (repo) => {
       const query = { ...repo, path: prefix };
       return (
         <Breadcrumb.Item key={fragment}>
-          <Link href={{ pathname: '/repo/tree', query }} as={generateBrowsingLink(query)}>
+          <Link href={{ pathname: '/repo/tree', query }} as={generate(endpoints.TREE)(query)}>
             <a>{fragment}</a>
           </Link>
         </Breadcrumb.Item>
@@ -33,7 +33,7 @@ export default class extends React.PureComponent {
       <Layout>
         <Breadcrumb style={{ margin: '16px 0' }}>
           <Breadcrumb.Item>
-            <Link href={{ pathname: '/repo/tree', query }} as={generateBrowsingLink(query)}>
+            <Link href={{ pathname: '/repo/tree', query }} as={generate(endpoints.TREE)(query)}>
               <a>{repo.name}</a>
             </Link>
           </Breadcrumb.Item>

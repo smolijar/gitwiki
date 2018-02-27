@@ -1,16 +1,16 @@
 import { takeLatest, put, all } from 'redux-saga/effects';
-import { generateBrowsingLink, generateRefsLink } from '../../src/routes';
+import { generate, endpoints } from '../../src/routes';
 import fetchApi from '../../src/fetchApi';
 import types from '../actions/types';
 import actions from '../actions/actions';
 
 export function* fetchTree(action) {
-  const data = yield fetchApi(generateBrowsingLink(action.data));
+  const data = yield fetchApi(generate(endpoints.TREE)(action.data));
   yield put(actions.repo.setTree(data));
 }
 
 export function* fetchRefs(action) {
-  const data = yield fetchApi(generateRefsLink(action.data));
+  const data = yield fetchApi(generate(endpoints.REFS)(action.data));
   yield put(actions.repo.setRefs(data));
 }
 

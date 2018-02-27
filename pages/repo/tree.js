@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import icons from 'file-icons-js';
 import Breadcrumb from '../../components/Breadcrumb';
 import AppLayout from '../../components/Layout';
-import { generateBrowsingLink } from '../../src/routes';
+import { endpoints, generate } from '../../src/routes';
 import fetchApi from '../../src/fetchApi';
 import withRedux from '../../redux/withRedux';
 import actions from '../../redux/actions/actions';
@@ -31,7 +31,7 @@ class Tree extends React.Component {
 
   static async getInitialProps({ req, query, store }) {
     store.dispatch(actions.repo.setRepo(query));
-    const response = await fetchApi(generateBrowsingLink(query), { req });
+    const response = await fetchApi(generate(endpoints.TREE)(query), { req });
     store.dispatch(actions.repo.setTree(response));
   }
 
@@ -52,7 +52,7 @@ class Tree extends React.Component {
                   const entryRepo = { ...this.props.repo.meta, path: item.path };
                   return (
                     <Menu.Item key={item.name}>
-                      <Link href={{ pathname: '/repo/tree', query: entryRepo }} as={generateBrowsingLink(entryRepo)}>
+                      <Link href={{ pathname: '/repo/tree', query: entryRepo }} as={generate(endpoints.TREE)(entryRepo)}>
                         <a><span className={`${getIconClass(item)} node`}> {item.name}</span></a>
                       </Link>
                     </Menu.Item>
