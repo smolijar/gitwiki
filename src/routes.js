@@ -1,19 +1,17 @@
+const endpoints = {
+  TREE: 'TREE',
+  REFS: 'REFS',
+};
 
+module.exports.endpoints = endpoints;
 
-import fetch from 'isomorphic-fetch';
+const routes = {
+  [endpoints.TREE]: {
+    generate: ({ name, ref, path }) => `/repo/tree/${[name, ref, path].filter(p => p !== '').join('/')}`,
+  },
+  [endpoints.REFS]: {
+    generate: ({ name }) => `/repo/refs/${name}`,
+  },
+};
 
-export const generateBrowsingLink = ({ name, ref, path }) => `/repo/tree/${[name, ref, path].filter(p => p !== '').join('/')}`;
-
-export async function fetchApi(link, params = {}) {
-  const req = params.req || false;
-  let uri = `/api/v1${link}`;
-  if (req) {
-    uri = `${req.protocol}://${req.get('host')}${uri}`;
-  }
-  return fetch(uri, {
-    method: 'GET',
-  })
-    .then(res => res.text())
-    .then(res => JSON.parse(res));
-}
-
+module.exports.generate = endpoint => routes[endpoint].generate;

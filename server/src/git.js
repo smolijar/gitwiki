@@ -32,7 +32,21 @@ module.exports.getLocalRepository = (repoPath) => {
     });
 };
 
-module.exports.browse = (repo, treePath = null) => {
+module.exports.refs = repo => repo
+  .getReferenceNames(NodeGit.Reference.TYPE.LISTALL)
+  .then(refs => refs.map((ref) => {
+    const [, group, ...compoundName] = ref.split('/');
+    const name = compoundName[compoundName.length - 1];
+    return {
+      ref, group, name, compoundName: compoundName.join('/'),
+    };
+  }));
+
+module.exports.findRef = (repo, name) => module.exports
+  .refs(repo)
+  .then(refs => refs.find(r => r.name === name));
+
+module.exports.browse = (repo, treePath = null, ref = null) => {
   const formatEntry = entry => ({
     name: entry.name(),
     path: entry.path(),
@@ -51,8 +65,12 @@ module.exports.browse = (repo, treePath = null) => {
       .then(([blob, { tree }]) => ({ blob, tree }));
   };
 
-  return repo.getHeadCommit()
-    .then(commit => commit.getTree())
+  const commit = ref ? module.exports
+    .findRef(repo, ref)
+    .then(r => repo.getReferenceCommit(_.get(r, 'ref', ref))) : repo.getHeadCommit();
+
+  return commit
+    .then(rev => rev.getTree())
     .then((tree) => {
       // if treePath is null, stay on root
       if (!treePath) return formatTree(tree);
