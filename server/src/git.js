@@ -35,8 +35,11 @@ module.exports.getLocalRepository = (repoPath) => {
 module.exports.refs = repo => repo
   .getReferenceNames(NodeGit.Reference.TYPE.LISTALL)
   .then(refs => refs.map((ref) => {
-    const [, group, name] = ref.split('/');
-    return { ref, group, name };
+    const [, group, ...compoundName] = ref.split('/');
+    const name = compoundName[compoundName.length - 1];
+    return {
+      ref, group, name, compoundName: compoundName.join('/'),
+    };
   }));
 
 module.exports.findRef = (repo, name) => module.exports
