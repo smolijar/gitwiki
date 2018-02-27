@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Layout, Breadcrumb } from 'antd';
 import _ from 'lodash';
 import { generateBrowsingLink } from '../src/routes';
+import References from './References';
 
 
 const getCrumbs = (repo) => {
@@ -33,8 +34,11 @@ export default class extends React.PureComponent {
         <Breadcrumb style={{ margin: '16px 0' }}>
           <Breadcrumb.Item>
             <Link href={{ pathname: '/repo/tree', query }} as={generateBrowsingLink(query)}>
-              <a>{repo.name} ※ {repo.ref}</a>
+              <a>{repo.name}</a>
             </Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <References refs={[{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]} selected={repo.ref} repo={query} />
           </Breadcrumb.Item>
           {getCrumbs(repo)}
         </Breadcrumb>
