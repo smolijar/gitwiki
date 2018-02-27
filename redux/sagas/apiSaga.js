@@ -1,5 +1,6 @@
 import { takeLatest, put, all } from 'redux-saga/effects';
-import { fetchApi, generateBrowsingLink, generateRefsLink } from '../../src/routes';
+import { generateBrowsingLink, generateRefsLink } from '../../src/routes';
+import fetchApi from '../../src/fetchApi';
 import types from '../actions/types';
 import actions from '../actions/actions';
 

@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import icons from 'file-icons-js';
 import Breadcrumb from '../../components/Breadcrumb';
 import AppLayout from '../../components/Layout';
-import { fetchApi, generateBrowsingLink } from '../../src/routes';
+import { generateBrowsingLink } from '../../src/routes';
+import fetchApi from '../../src/fetchApi';
 import withRedux from '../../redux/withRedux';
 import actions from '../../redux/actions/actions';
 
