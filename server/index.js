@@ -1,7 +1,7 @@
 const express = require('express');
 const next = require('next');
 const logger = require('./src/logger');
-const bindRoutes = require('./routes');
+const getRootRouter = require('./routes');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -9,7 +9,7 @@ const app = next({ dev });
 app.prepare().then(() => {
   const server = express();
 
-  bindRoutes(server, app);
+  server.use(getRootRouter(app));
 
   server.listen(3000, (err) => {
     if (err) throw err;
