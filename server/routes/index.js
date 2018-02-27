@@ -1,13 +1,13 @@
-const staticRoutes = require('./static');
-const nextRoutes = require('./next');
-const apiRoutes = require('./api');
+const staticRouter = require('./static');
+const getNextRouter = require('./next');
+const apiRouter = require('./api');
 
 module.exports = (server, app) => {
   const handle = app.getRequestHandler();
 
-  nextRoutes(server, app);
-  staticRoutes(server);
-  apiRoutes(server);
+  server.use(getNextRouter(app));
+  server.use('/static', staticRouter);
+  server.use('/api/v1', apiRouter);
 
   server.get('*', (req, res) => {
     handle(req, res);

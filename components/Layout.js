@@ -29,9 +29,9 @@ export default class extends React.PureComponent {
     return (
       <Layout>
         <Head>
-          <link rel="stylesheet" type="text/css" href="/antd/antd.css" />
-          <link rel="stylesheet" type="text/css" href="/nprogress/nprogress.css" />
-          <link rel="stylesheet" type="text/css" href="/file-icons-js/css/style.css" />
+          <link rel="stylesheet" type="text/css" href="/static/antd/antd.css" />
+          <link rel="stylesheet" type="text/css" href="/static/nprogress/nprogress.css" />
+          <link rel="stylesheet" type="text/css" href="/static/file-icons-js/css/style.css" />
         </Head>
         <Header className="header">
           <div className="logo">
