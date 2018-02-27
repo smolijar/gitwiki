@@ -4,6 +4,8 @@ import fetch from 'isomorphic-fetch';
 
 export const generateBrowsingLink = ({ name, ref, path }) => `/repo/tree/${[name, ref, path].filter(p => p !== '').join('/')}`;
 
+export const generateRefsLink = ({ name }) => `/repo/refs/${name}`;
+
 export async function fetchApi(link, params = {}) {
   const req = params.req || false;
   let uri = `/api/v1${link}`;
