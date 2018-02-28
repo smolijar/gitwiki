@@ -1,7 +1,7 @@
 const express = require('express');
 const next = require('next');
 const logger = require('./src/logger');
-const getRootRouter = require('./routes');
+const rootRouter = require('./routes');
 const bootstrap = require('./bootstrap');
 
 
@@ -12,7 +12,7 @@ app.prepare().then(() => {
   const server = express();
 
   bootstrap(server, app);
-  server.use(getRootRouter(app));
+  server.use(rootRouter);
 
   server.listen(3000, (err) => {
     if (err) throw err;
