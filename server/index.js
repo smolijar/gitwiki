@@ -2,6 +2,8 @@ const express = require('express');
 const next = require('next');
 const logger = require('./src/logger');
 const getRootRouter = require('./routes');
+const bootstrap = require('./bootstrap');
+
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -9,6 +11,7 @@ const app = next({ dev });
 app.prepare().then(() => {
   const server = express();
 
+  bootstrap(server, app);
   server.use(getRootRouter(app));
 
   server.listen(3000, (err) => {

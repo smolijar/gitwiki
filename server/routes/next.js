@@ -7,7 +7,7 @@ module.exports = (app) => {
 
   router.get(expressPattern(endpoints.TREE), (req, res) => {
     req.params.path = req.params.path || '';
-    app.render(req, res, '/repo/tree', req.params);
+    req.nextjs.render(req, res, '/repo/tree', req.params);
   });
 
   return router;
