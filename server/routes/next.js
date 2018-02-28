@@ -1,10 +1,11 @@
 const express = require('express');
+const { expressPattern, endpoints } = require('../../src/routes');
 
 
 module.exports = (app) => {
   const router = express.Router();
 
-  router.get('/repo/tree/:name/:ref/:path([\\S\\s]+)?', (req, res) => {
+  router.get(expressPattern(endpoints.TREE), (req, res) => {
     req.params.path = req.params.path || '';
     app.render(req, res, '/repo/tree', req.params);
   });
