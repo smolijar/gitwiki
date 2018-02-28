@@ -8,10 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Reference listing API
 - ReferenceContainer for ref switching
+- Server express nextjs bootstrapping
 
 ### Changed
 - Refactor routing
 - Seperate fetchApi function from routing
+- Refactor server routing (Express.Routers replaced function binding)
 
 ## [0.3.0] - 2018-02-26
 ### Added
