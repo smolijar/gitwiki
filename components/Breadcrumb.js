@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Layout, Breadcrumb } from 'antd';
-import _ from 'lodash';
+import { zip } from 'ramda';
 import { generate, endpoints } from '../src/routes';
 import ReferencesContainer from '../containers/ReferencesContainer';
 
 
 const getCrumbs = (repo) => {
   const prefixes = path => path.split('/').map((v, i) => path.split('/').slice(0, i + 1).join('/'));
-  return _.zip(prefixes(repo.path), repo.path.split('/'))
+  return zip(prefixes(repo.path), repo.path.split('/'))
     .map(([prefix, fragment]) => {
       const query = { ...repo, path: prefix };
       return (
