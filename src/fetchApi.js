@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import fetch from 'isomorphic-unfetch';
 
 export default async function fetchApi(link, params = {}) {
   const req = params.req || false;
