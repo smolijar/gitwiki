@@ -12,7 +12,7 @@ module.exports.getRedirectUri = () => {
     client_id: githubConfig.client_id,
     scope: 'repo user:read',
   });
-  return `https://github.com/login/oauth/authorize?${query}`
+  return `https://github.com/login/oauth/authorize?${query}`;
 };
 
 module.exports.getAccessToken = (code) => {

@@ -7,4 +7,7 @@ export default {
     fetchRefs: data => ({ type: types.repo.FETCH_REFS, data }),
     setRefs: data => ({ type: types.repo.SET_REFS, data }),
   },
+  auth: {
+    setAccessToken: data => ({ type: types.auth.SET_ACCESS_TOKEN, data }),
+  },
 };
