@@ -1,7 +1,9 @@
 const { Issuer } = require('openid-client');
 const querystring = require('querystring');
 const config = require('../../../.gitwiki.config');
-const { path, merge, compose, prop } = require('ramda');
+const {
+  path, merge, compose, prop,
+} = require('ramda');
 
 
 const githubConfig = path('auth.oidc.github'.split('.'), config);
@@ -28,7 +30,6 @@ module.exports.getAccessToken = (code) => {
   return fetch(url, {
     method: 'POST',
   })
-    .then((response) => response.text()
-      .then(compose(prop('access_token') , querystring.parse))
-    )
-}
+    .then(response => response.text()
+      .then(compose(prop('access_token'), querystring.parse)));
+};

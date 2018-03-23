@@ -1,7 +1,8 @@
 const NodeGit = require('nodegit');
 const path = require('path');
-const _ = require('lodash');
-const { sortWith, ascend, descend, prop, propOr } = require('ramda');
+const {
+  sortWith, ascend, descend, prop, propOr,
+} = require('ramda');
 
 const getLocalRepoWd = repoPath => `/tmp/gitwiki/${repoPath}`;
 

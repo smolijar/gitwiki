@@ -2,7 +2,6 @@ const express = require('express');
 const logger = require('../src/logger');
 const git = require('../src/git');
 const { expressPattern, endpoints } = require('../../src/routes');
-const fetch = require('isomorphic-unfetch');
 const { getRedirectUri, getAccessToken } = require('../auth/oidc/github');
 
 const router = express.Router();
@@ -29,7 +28,7 @@ router.get(expressPattern(endpoints.AUTH_GITHUB), (req, res) => {
 router.get(expressPattern(endpoints.AUTH_GITHUB_CB), (req, res) => {
   const { code } = req.query;
   getAccessToken(code)
-    .then(foo => res.json(foo));
+    .then(access_token => req.nextjs.render(req, res, '/auth/github/cb', { access_token }));
 });
 
 module.exports = router;
