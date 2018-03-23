@@ -1,4 +1,3 @@
-const { Issuer } = require('openid-client');
 const querystring = require('querystring');
 const config = require('../../../.gitwiki.config');
 const {
@@ -9,24 +8,16 @@ const {
 const githubConfig = path('auth.oidc.github'.split('.'), config);
 
 module.exports.getRedirectUri = () => {
-  const issuer = new Issuer({
-    authorization_endpoint: 'https://github.com/login/oauth/authorize',
-    token_endpoint: 'https://github.com/login/oauth/access_token',
-    userinfo_endpoint: 'https://api.github.com/user',
+  const query = querystring.stringify({
+    client_id: githubConfig.client_id,
+    scope: 'repo user:read',
   });
-  const client = new issuer.Client(githubConfig);
-  const url = client.authorizationUrl({
-    redirect_uri: 'http://localhost:3000/api/v1/auth/github/cb',
-    scope: 'repo read:user',
-  });
-  return url;
+  return `https://github.com/login/oauth/authorize?${query}`
 };
 
 module.exports.getAccessToken = (code) => {
   const params = querystring.stringify(merge(githubConfig, { code }));
-
   const url = `https://github.com/login/oauth/access_token/?${params}`;
-
   return fetch(url, {
     method: 'POST',
   })
