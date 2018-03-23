@@ -25,7 +25,7 @@ class Login extends React.PureComponent {
               icon="github"
               size="large"
               onClick={() => {
-                window.processCode = this.props.setToken;
+                window.processToken = this.props.setToken;
                 window.open('/api/v1/auth/github');
               }}
             >Log in via GitHub

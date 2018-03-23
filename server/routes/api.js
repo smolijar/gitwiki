@@ -28,7 +28,7 @@ router.get(expressPattern(endpoints.AUTH_GITHUB), (req, res) => {
 router.get(expressPattern(endpoints.AUTH_GITHUB_CB), (req, res) => {
   const { code } = req.query;
   getAccessToken(code)
-    .then(access_token => req.nextjs.render(req, res, '/auth/github/cb', { access_token }));
+    .then(accessToken => req.nextjs.render(req, res, '/auth/github/cb', { accessToken }));
 });
 
 module.exports = router;

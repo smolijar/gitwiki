@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 
 class Callback extends React.Component {
   static async getInitialProps({ query }) {
-    return { access_token: query.access_token };
+    return { accessToken: query.accessToken };
   }
   static propTypes = {
-    access_token: PropTypes.string.isRequired,
+    accessToken: PropTypes.string.isRequired,
   }
   componentDidMount() {
-    window.opener.processCode(this.props.access_token);
+    window.opener.processToken(this.props.accessToken);
     close();
   }
   render() {
-    const msg = this.props.access_token ? 'Authentication successful' : 'Missing `access_token` in query';
+    const msg = this.props.accessToken ? 'Authentication successful' : 'Missing `accessToken` in query';
     return (<span>{msg}</span>);
   }
 }
