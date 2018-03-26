@@ -7,7 +7,6 @@ const { getRedirectUri, getAccessToken } = require('../auth/github');
 const router = express.Router();
 
 router.get(api.tree, (req, res) => {
-  req.params.path = req.params.path || '';
   git.getLocalRepository(req.params.name)
     .then(repo => git.browse(repo, req.params.path, req.params.ref))
     .then(data => res.json(data))
