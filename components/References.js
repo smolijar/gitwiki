@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Dropdown } from 'antd';
-import { generate, endpoints } from '../src/routes';
+import { compile } from 'path-to-regexp';
+import { front } from '../common/endpoints';
 
 export default class References extends React.PureComponent {
   static propTypes = {
@@ -24,7 +25,7 @@ export default class References extends React.PureComponent {
               const query = { ...this.props.repo, ref: ref.name };
               return (
                 <Menu.Item disabled={ref.name === this.props.repo.ref} key={ref.name}>
-                  <Link href={{ pathname: '/repo/tree', query }} as={generate(endpoints.TREE)(query)}>
+                  <Link href={{ pathname: '/repo/tree', query }} as={compile(front.tree)(query)}>
                     <span>{ref.name}</span>
                   </Link>
                 </Menu.Item>

@@ -4,12 +4,13 @@ import Link from 'next/link';
 import { Layout, Menu } from 'antd';
 import { connect } from 'react-redux';
 import icons from 'file-icons-js';
+import { compile } from 'path-to-regexp';
 import Breadcrumb from '../../components/Breadcrumb';
 import AppLayout from '../../components/Layout';
-import { endpoints, generate } from '../../src/routes';
-import fetchApi from '../../src/fetchApi';
+import fetchApi from '../../common/fetchApi';
 import withRedux from '../../redux/withRedux';
 import actions from '../../redux/actions/actions';
+import { front, api } from '../../common/endpoints';
 
 const {
   Content, Sider,
@@ -31,7 +32,7 @@ class Tree extends React.Component {
 
   static async getInitialProps({ req, query, store }) {
     store.dispatch(actions.repo.setRepo(query));
-    const response = await fetchApi(generate(endpoints.TREE)(query), { req });
+    const response = await fetchApi(compile(api.tree)(query), { req });
     store.dispatch(actions.repo.setTree(response));
   }
 
@@ -52,7 +53,7 @@ class Tree extends React.Component {
                   const entryRepo = { ...this.props.repo.meta, path: item.path };
                   return (
                     <Menu.Item key={item.name}>
-                      <Link href={{ pathname: '/repo/tree', query: entryRepo }} as={generate(endpoints.TREE)(entryRepo)}>
+                      <Link href={{ pathname: '/repo/tree', query: entryRepo }} as={compile(front.tree)(entryRepo)}>
                         <a><span className={`${getIconClass(item)} node`}> {item.name}</span></a>
                       </Link>
                     </Menu.Item>
