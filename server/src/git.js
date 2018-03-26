@@ -1,6 +1,8 @@
 const NodeGit = require('nodegit');
 const path = require('path');
-const _ = require('lodash');
+const {
+  sortWith, ascend, descend, prop, propOr,
+} = require('ramda');
 
 const getLocalRepoWd = repoPath => `/tmp/gitwiki/${repoPath}`;
 
@@ -52,7 +54,8 @@ module.exports.browse = (repo, treePath = null, ref = null) => {
     path: entry.path(),
     isDirectory: entry.isDirectory(),
   });
-  const formatTree = tree => ({ tree: _.orderBy(tree.entries().map(formatEntry), ['isDirectory', 'name'], ['desc', 'asc']) });
+  const sortEntries = sortWith([descend(prop('isDirectory')), ascend(prop('name'))]);
+  const formatTree = tree => ({ tree: sortEntries(tree.entries().map(formatEntry)) });
   const formatBlob = (blobEntry, rootTree) => {
     const dirPath = path.parse(treePath).dir;
     return Promise.all([
@@ -67,7 +70,7 @@ module.exports.browse = (repo, treePath = null, ref = null) => {
 
   const commit = ref ? module.exports
     .findRef(repo, ref)
-    .then(r => repo.getReferenceCommit(_.get(r, 'ref', ref))) : repo.getHeadCommit();
+    .then(r => repo.getReferenceCommit(propOr(ref, 'ref', r))) : repo.getHeadCommit();
 
   return commit
     .then(rev => rev.getTree())

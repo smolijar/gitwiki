@@ -14,9 +14,15 @@ export function* fetchRefs(action) {
   yield put(actions.repo.setRefs(data));
 }
 
+export function* fetchUser(action) {
+  const data = yield fetchApi(generate(endpoints.USER)(action.data));
+  yield put(actions.user.setUser(data));
+}
+
 export default function* () {
   yield all([
     takeLatest(types.repo.FETCH_TREE, fetchTree),
     takeLatest(types.repo.FETCH_REFS, fetchRefs),
+    takeLatest(types.user.FETCH_USER, fetchUser),
   ]);
 }
