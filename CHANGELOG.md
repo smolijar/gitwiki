@@ -12,14 +12,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Ramda.js
 - GitHub authentication
 - User widget
+- path-to-regexp dep
 
 ### Changed
 - Refactor routing
 - Seperate fetchApi function from routing
 - Refactor server routing (Express.Routers replaced function binding)
+- Uniform express and FE routing
 
 ## Removed
 - Lodash dependecy
+- The ugly ass black hole heavy route logic
 
 ## [0.3.0] - 2018-02-26
 ### Added
