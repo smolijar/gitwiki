@@ -1,6 +1,6 @@
 module.exports = {
   auth: {
-    oidc: {
+    oauth2: {
       github: {
         client_id: 'CLIENT_ID',
         client_secret: 'CLIENT_SECRET',
