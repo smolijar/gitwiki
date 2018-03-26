@@ -9,11 +9,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Reference listing API
 - ReferenceContainer for ref switching
 - Server express nextjs bootstrapping
+- Ramda.js
+- GitHub authentication
+- User widget
 
 ### Changed
 - Refactor routing
 - Seperate fetchApi function from routing
 - Refactor server routing (Express.Routers replaced function binding)
+
+## Removed
+- Lodash dependecy
 
 ## [0.3.0] - 2018-02-26
 ### Added
