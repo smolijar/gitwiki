@@ -9,4 +9,8 @@ export default {
   auth: {
     SET_ACCESS_TOKEN: 'SET_ACCESS_TOKEN',
   },
+  user: {
+    FETCH_USER: 'FETCH_USER',
+    SET_USER: 'SET_USER',
+  },
 };

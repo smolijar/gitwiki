@@ -11,6 +11,7 @@ class Callback extends React.Component {
   }
   componentDidMount() {
     window.opener.processToken(this.props.accessToken);
+    // eslint-disable-next-line no-restricted-globals
     close();
   }
   render() {

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Layout, Menu, Icon } from 'antd';
 import NProgress from 'nprogress';
 import Router from 'next/router';
+import WidgetContainer from '../containers/user/WidgetContainer';
 
 const {
   Header, Content, Footer,
@@ -45,7 +46,11 @@ export default class extends React.PureComponent {
             theme="dark"
             mode="horizontal"
             style={{ lineHeight: '64px' }}
-          />
+          >
+            <Menu.Item>
+              <WidgetContainer />
+            </Menu.Item>
+          </Menu>
         </Header>
         <Content style={{ padding: '0 50px' }}>
           {this.props.children}

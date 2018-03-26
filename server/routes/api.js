@@ -31,4 +31,13 @@ router.get(expressPattern(endpoints.AUTH_GITHUB_CB), (req, res) => {
     .then(accessToken => req.nextjs.render(req, res, '/auth/github/cb', { accessToken }));
 });
 
+router.get(expressPattern(endpoints.USER), (req, res) => {
+  const { authorization } = req.headers;
+  if (authorization) {
+    fetch('https://api.github.com/user', { headers: { authorization } })
+      .then(x => x.json())
+      .then(r => res.json(r));
+  }
+});
+
 module.exports = router;

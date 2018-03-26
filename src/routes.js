@@ -3,6 +3,7 @@ const endpoints = {
   REFS: 'REFS',
   AUTH_GITHUB: 'AUTH_GITHUB',
   AUTH_GITHUB_CB: 'AUTH_GITHUB_CB',
+  USER: 'USER',
 };
 
 module.exports.endpoints = endpoints;
@@ -15,6 +16,10 @@ const routes = {
   [endpoints.REFS]: {
     generate: ({ name }) => `/repo/refs/${name}`,
     express: '/repo/refs/:name',
+  },
+  [endpoints.USER]: {
+    generate: () => '/user',
+    express: '/user',
   },
   [endpoints.AUTH_GITHUB]: {
     generate: () => '/auth/github',
