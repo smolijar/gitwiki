@@ -27,7 +27,7 @@ export default class Widget extends React.PureComponent {
         icon="github"
         onClick={getAccessToken}
       >Log in
-        </Button>
+      </Button>
     );
   }
 }

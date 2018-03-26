@@ -5,9 +5,7 @@ const {
   path, merge, compose, prop,
 } = require('ramda');
 
-console.log(config);
 const githubConfig = path('auth.oauth2.github'.split('.'), config);
-console.log(githubConfig);
 
 module.exports.getRedirectUri = () => {
   const query = querystring.stringify({

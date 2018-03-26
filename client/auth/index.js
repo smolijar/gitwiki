@@ -1,4 +1,4 @@
-import { compose, all, identity } from 'ramda';
+import { compose } from 'ramda';
 
 const STORAGE_KEY = 'github_access';
 
