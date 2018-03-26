@@ -1,5 +1,5 @@
 const querystring = require('querystring');
-const config = require('../../../.gitwiki.config');
+const config = require('../../.gitwiki.config');
 const {
   path, merge, compose, prop,
 } = require('ramda');
