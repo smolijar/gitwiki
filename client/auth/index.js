@@ -1,11 +1,11 @@
-import { compose } from 'ramda';
+import { compose, all, identity } from 'ramda';
 
 const STORAGE_KEY = 'github_access';
 
 const store = (token) => { localStorage.setItem(STORAGE_KEY, token); return token; };
 const retrieve = () => localStorage.getItem(STORAGE_KEY);
 
-const isLoggedIn = compose(Boolean, retrieve);
+const isLoggedIn = () => typeof localStorage !== 'undefined' && retrieve();
 
 const getAccessToken = () => new Promise((res) => {
   const token = retrieve();
