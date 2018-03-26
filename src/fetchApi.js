@@ -4,7 +4,7 @@ import { isLoggedIn, getAccessToken } from '../client/auth';
 
 export default async function fetchApi(link, params = {}) {
   const req = params.req || false;
-  let uri = `/api/v1${link}`;
+  let uri = link;
   if (req) {
     uri = `${req.protocol}://${req.get('host')}${uri}`;
   }

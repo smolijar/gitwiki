@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.use(nextRouter);
 router.use('/static', staticRouter);
-router.use('/api/v1', apiRouter);
+router.use(apiRouter);
 
 router.get('*', (req, res) => {
   const handle = req.nextjs.getRequestHandler();
