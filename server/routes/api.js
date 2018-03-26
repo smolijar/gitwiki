@@ -1,7 +1,7 @@
 const express = require('express');
 const logger = require('../src/logger');
 const git = require('../src/git');
-const { api } = require('../../src/endpoints');
+const { api } = require('../../common/endpoints');
 const { getRedirectUri, getAccessToken } = require('../auth/github');
 
 const router = express.Router();

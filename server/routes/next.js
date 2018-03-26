@@ -1,5 +1,5 @@
 const express = require('express');
-const { front } = require('../../src/endpoints');
+const { front } = require('../../common/endpoints');
 
 const router = express.Router();
 

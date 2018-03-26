@@ -1,5 +1,3 @@
-const pathToRegexp = require('path-to-regexp');
-
 const endpoints = {
   api: {
     tree: '/api/v1/repo/:name/tree/:ref/:path([\\S\\s]*)?',
@@ -11,7 +9,6 @@ const endpoints = {
   front: {
     tree: '/repo/:name/tree/:ref/:path([\\S\\s]*)?',
   },
-  construct: pathToRegexp.compile,
 };
 
 module.exports = endpoints;
