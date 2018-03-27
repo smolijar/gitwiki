@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card } from 'antd';
-import { slice, compose, concat, flip, identity, ifElse } from 'ramda';
+import { Card, Avatar } from 'antd';
 const entryType = PropTypes.shape({
   name: PropTypes.string,
 });
@@ -14,16 +13,29 @@ export default class IndexEntry extends React.PureComponent {
   }
 
   render() {
-    const trunc = ifElse(
-      identity,
-      compose(flip(concat)('...'), slice(0,80)),
-      identity
-    )
     const { entry } = this.props;
     return (<div>
-      <Card className="repo-entry" title={entry.name}>{trunc(entry.description)}</Card>
+      <Card
+        style={{ height: 90 }}
+      >
+        <Card.Meta
+          avatar={<Avatar icon="github" />}
+          title={entry.name}
+          description={entry.description}
+          className="repo-entry"
+          style={{
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+          }}
+        />
+      </Card>
       <style jsx global>{`
-      .repo-entry .ant-card-body { height: 100px }
+        .repo-entry .ant-card-meta-description {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
       `}</style>
     </div>);
   }
