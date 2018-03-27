@@ -3,20 +3,16 @@ import PropTypes from 'prop-types';
 
 export default class List extends React.PureComponent {
   static propTypes = {
-    fetchList: PropTypes.func.isRequired,
-    list: PropTypes.arrayOf(PropTypes.shape({
+    fetchIndex: PropTypes.func.isRequired,
+    index: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string,
-    })),
+    })).isRequired,
   }
-  static defaultProps = {
-    list: [],
-  }
-
   componentDidMount() {
-    this.props.fetchList();
+    this.props.fetchIndex();
   }
 
   render() {
-    return this.props.list.map(item => <h1 key={item.name}>{item.name}</h1>);
+    return this.props.index.map(item => <h1 key={item.name}>{item.name}</h1>);
   }
 }

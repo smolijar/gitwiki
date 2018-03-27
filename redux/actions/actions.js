@@ -6,8 +6,8 @@ export default {
     setRepo: data => ({ type: types.repo.SET_REPO, data }),
     fetchRefs: data => ({ type: types.repo.FETCH_REFS, data }),
     setRefs: data => ({ type: types.repo.SET_REFS, data }),
-    fetchList: data => ({ type: types.repo.FETCH_LIST, data }),
-    setList: data => ({ type: types.repo.SET_LIST, data }),
+    fetchIndex: data => ({ type: types.repo.FETCH_INDEX, data }),
+    setIndex: data => ({ type: types.repo.SET_INDEX, data }),
   },
   user: {
     fetchUser: data => ({ type: types.user.FETCH_USER, data }),

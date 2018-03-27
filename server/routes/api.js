@@ -39,7 +39,7 @@ router.get(api.user, (req, res) => {
   }
 });
 
-router.get(api.list, (req, res) => {
+router.get(api.index, (req, res) => {
   const { authorization } = req.headers;
   if (authorization) {
     fetch('https://api.github.com/user/repos', { headers: { authorization } })

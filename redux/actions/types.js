@@ -5,8 +5,8 @@ export default {
     SET_REPO: 'SET_REPO',
     FETCH_REFS: 'FETCH_REFS',
     SET_REFS: 'SET_REFS',
-    SET_LIST: 'SET_LIST',
-    FETCH_LIST: 'FETCH_LIST',
+    SET_INDEX: 'SET_INDEX',
+    FETCH_INDEX: 'FETCH_INDEX',
   },
   user: {
     FETCH_USER: 'FETCH_USER',

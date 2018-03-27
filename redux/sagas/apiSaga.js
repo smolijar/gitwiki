@@ -21,9 +21,9 @@ export function* fetchUser(action) {
   yield put(actions.user.setUser(data));
 }
 
-export function* fetchList(action) {
-  const data = yield fetchApi(compile(api.list)(action.data));
-  yield put(actions.repo.setList(data));
+export function* fetchIndex(action) {
+  const data = yield fetchApi(compile(api.index)(action.data));
+  yield put(actions.repo.setIndex(data));
 }
 
 export default function* () {
@@ -31,6 +31,6 @@ export default function* () {
     takeLatest(types.repo.FETCH_TREE, fetchTree),
     takeLatest(types.repo.FETCH_REFS, fetchRefs),
     takeLatest(types.user.FETCH_USER, fetchUser),
-    takeLatest(types.repo.FETCH_LIST, fetchList),
+    takeLatest(types.repo.FETCH_INDEX, fetchIndex),
   ]);
 }
