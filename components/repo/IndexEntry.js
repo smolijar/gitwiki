@@ -8,7 +8,7 @@ const entryType = PropTypes.shape({
 
 export { entryType };
 
-export default class ListEntry extends React.PureComponent {
+export default class IndexEntry extends React.PureComponent {
   static propTypes = {
     entry: entryType.isRequired,
   }

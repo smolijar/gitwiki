@@ -3,19 +3,19 @@ import { Layout } from 'antd';
 import { connect } from 'react-redux';
 import AppLayout from '../../components/Layout';
 import withRedux from '../../redux/withRedux';
-import ListContainer from '../../containers/repo/ListContainer';
+import IndexContainer from '../../containers/repo/IndexContainer';
 
 const {
   Content,
 } = Layout;
 
-class List extends React.PureComponent {
+class Index extends React.PureComponent {
   render() {
     return (
       <AppLayout>
         <Layout style={{ padding: '24px 0', background: '#fff' }}>
           <Content style={{ padding: '0 24px', minHeight: 280 }}>
-            <ListContainer />
+            <IndexContainer />
           </Content>
         </Layout>
       </AppLayout>
@@ -23,4 +23,4 @@ class List extends React.PureComponent {
   }
 }
 
-export default withRedux()(connect(state => ({ list: state.repo.list }), null)(List));
+export default withRedux()(connect(null, null)(Index));
