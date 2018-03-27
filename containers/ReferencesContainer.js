@@ -5,5 +5,5 @@ import References from '../components/References';
 
 export default connect(
   state => ({ repo: state.repo.meta, refs: state.repo.refs }),
-  { fetchRefs: actions.repo.fetchRefs },
+  { fetchRefs: actions.repo.fetchRefs, fetchList: actions.repo.fetchList },
 )(References);

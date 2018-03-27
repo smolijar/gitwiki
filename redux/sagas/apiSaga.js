@@ -21,10 +21,16 @@ export function* fetchUser(action) {
   yield put(actions.user.setUser(data));
 }
 
+export function* fetchList(action) {
+  const data = yield fetchApi(compile(api.list)(action.data));
+  yield put(actions.repo.setList(data));
+}
+
 export default function* () {
   yield all([
     takeLatest(types.repo.FETCH_TREE, fetchTree),
     takeLatest(types.repo.FETCH_REFS, fetchRefs),
     takeLatest(types.user.FETCH_USER, fetchUser),
+    takeLatest(types.repo.FETCH_LIST, fetchList),
   ]);
 }

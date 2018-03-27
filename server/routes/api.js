@@ -39,4 +39,15 @@ router.get(api.user, (req, res) => {
   }
 });
 
+router.get(api.list, (req, res) => {
+  const { authorization } = req.headers;
+  if (authorization) {
+    fetch('https://api.github.com/user/repos', { headers: { authorization } })
+      .then(x => x.json())
+      .then(r => res.json(r));
+  } else {
+    res.json({ code: 403 });
+  }
+});
+
 module.exports = router;

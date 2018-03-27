@@ -10,10 +10,12 @@ export default class References extends React.PureComponent {
     refs: PropTypes.arrayOf(PropTypes.object).isRequired,
     repo: PropTypes.objectOf(PropTypes.string).isRequired,
     fetchRefs: PropTypes.func.isRequired,
+    fetchList: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
     this.props.fetchRefs(this.props.repo);
+    this.props.fetchList();
   }
 
   render() {
