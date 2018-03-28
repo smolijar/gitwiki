@@ -1,11 +1,11 @@
 const querystring = require('querystring');
-const config = require('../../.gitwiki.config');
+const { getConfig } = require('../config');
 const fetch = require('isomorphic-unfetch');
 const {
-  path, merge, compose, prop,
+  merge, compose, prop,
 } = require('ramda');
 
-const githubConfig = path('auth.oauth2.github'.split('.'), config);
+const githubConfig = getConfig('auth.oauth2.github');
 
 module.exports.getRedirectUri = () => {
   const query = querystring.stringify({
