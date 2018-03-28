@@ -6,5 +6,9 @@ module.exports = {
         client_secret: 'CLIENT_SECRET',
       }
     }
+  },
+  gitolite: {
+    bin: '/home/git/bin/gitolite',
+    home: '/home/git',
   }
 };
