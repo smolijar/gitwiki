@@ -1,17 +1,22 @@
 const { exec } = require('child_process');
-const { not, filter, identity, split, compose, dropLastWhile, trim, all, ifElse, match, join, pipe, map, both, always, concat } = require('ramda');
+const {
+  not, filter, identity, split, compose, dropLastWhile,
+  all, ifElse, match, join, pipe, both, always, concat,
+} = require('ramda');
 
 const bin = '/home/git/bin/gitolite';
-const prefix = 'HOME=/home/git; ' + bin + ' ';
+const prefix = `HOME=/home/git; ${bin} `;
 
 const createCommand = (command, tranform = identity) => () => new Promise((res, rej) => {
-  exec(prefix + command,
+  exec(
+    prefix + command,
     (error, stdout, stderr) => {
       if (error !== null) {
         rej(error, stdout, stderr);
       }
       res(stdout, stderr);
-    });
+    },
+  );
 })
   .then(tranform);
 
@@ -23,7 +28,7 @@ const procArgs = pipe(
     always([]),
   ),
   join(' '),
-  concat(' ')
+  concat(' '),
 );
 
 const commands = {
@@ -31,7 +36,7 @@ const commands = {
   LIST_USERS: 'list-users',
   LIST_GROUPS: 'list-groups',
   ACCESS: 'access',
-}
+};
 
 const outToList = compose(filter(identity), split('\n'));
 
@@ -43,8 +48,8 @@ const gitolite = {
     const command = concat(commands.ACCESS, procArgs([repo, user, perm, ref]));
     return createCommand(command)()
       .then(always(true))
-      .catch(err => err.code === 1 ? false : err)
-  }
-}
+      .catch(err => (err.code === 1 ? false : err));
+  },
+};
 
 module.exports = gitolite;

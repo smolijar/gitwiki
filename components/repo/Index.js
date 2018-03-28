@@ -16,18 +16,16 @@ export default class Index extends React.PureComponent {
 
   render() {
     return splitEvery(3, this.props.index)
-      .map(tuple => {
-        return (
-          <Row gutter={16} style={{ marginBottom: 16 }}>
-            {
+      .map(tuple => (
+        <Row gutter={16} style={{ marginBottom: 16 }}>
+          {
               tuple.map(item => (
                 <Col span={8} key={item.name}>
                   <IndexEntry entry={item} />
                 </Col>
               ))
             }
-          </Row>
-        )
-      })
+        </Row>
+      ));
   }
 }

@@ -1,8 +1,13 @@
 const express = require('express');
+const {
+  map, pickAll, compose, assoc, __, unnest,
+} = require('ramda');
 const logger = require('../src/logger');
 const git = require('../src/git');
 const { api } = require('../../common/endpoints');
 const { getRedirectUri, getAccessToken } = require('../auth/github');
+const gitolite = require('../src/gitolite');
+
 
 const router = express.Router();
 
@@ -41,9 +46,17 @@ router.get(api.user, (req, res) => {
 
 router.get(api.index, (req, res) => {
   const { authorization } = req.headers;
+  const pickRepo = pickAll(['name', 'description']);
+  const entryFromName = assoc('name', __, {});
   if (authorization) {
-    fetch('https://api.github.com/user/repos', { headers: { authorization } })
-      .then(x => x.json())
+    Promise.all([
+      gitolite.listRepos()
+        .then(map(compose(pickRepo, entryFromName))),
+      fetch('https://api.github.com/user/repos', { headers: { authorization } })
+        .then(x => x.json())
+        .then(map(pickRepo)),
+    ])
+      .then(unnest)
       .then(r => res.json(r));
   } else {
     res.json({ code: 403 });
