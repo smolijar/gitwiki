@@ -10,14 +10,16 @@ const fetch = require('isomorphic-unfetch');
 const router = express.Router();
 
 router.get(api.tree, (req, res) => {
-  git.getLocalRepository(req.params.name)
+  providers.getProvider(req.params.provider)
+    .getRepository(req.params.name)
     .then(repo => git.browse(repo, req.params.path, req.params.ref))
     .then(data => res.json(data))
     .catch(e => logger.error(e));
 });
 
 router.get(api.refs, (req, res) => {
-  git.getLocalRepository(req.params.name)
+  providers.getProvider(req.params.provider)
+    .getRepository(req.params.name)
     .then(repo => git.refs(repo))
     .then(data => res.json(data))
     .catch(e => logger.error(e));
