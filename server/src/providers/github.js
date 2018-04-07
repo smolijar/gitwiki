@@ -1,5 +1,6 @@
 const { map, assoc } = require('ramda');
 const fetch = require('isomorphic-unfetch');
+const types = require('./types');
 
 const listRepos = (req) => {
   const { authorization } = req.headers;
@@ -11,4 +12,7 @@ const listRepos = (req) => {
     .then(map(assoc('provider', 'github')));
 };
 
-module.exports = { listRepos };
+const provider = types.GITHUB;
+
+
+module.exports = { listRepos, provider };
