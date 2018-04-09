@@ -5,14 +5,18 @@ import { isLoggedIn, getAccessToken } from '../client/auth';
 export default async function fetchApi(link, params = {}) {
   const req = params.req || false;
   let uri = link;
+  let headers = { method: 'GET' };
+  const authHeader = compose(assocPath(['headers', 'Authorization'], __, headers), concat('token '));
   if (req) {
     uri = `${req.protocol}://${req.get('host')}${uri}`;
+    if (req.cookies.token) {
+      headers = authHeader(req.cookies.token);
+    }
   }
-  const headers = { method: 'GET' };
   return new Promise((res) => {
     if (isLoggedIn()) {
       return getAccessToken()
-        .then(compose(assocPath(['headers', 'Authorization'], __, headers), concat('token ')))
+        .then(authHeader)
         .then(res);
     }
     return res(headers);

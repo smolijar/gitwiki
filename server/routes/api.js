@@ -1,25 +1,41 @@
 const express = require('express');
+const {
+  last, split, trim, compose,
+} = require('ramda');
 const logger = require('../src/logger');
 const git = require('../src/git');
 const { api } = require('../../common/endpoints');
 const { getRedirectUri, getAccessToken } = require('../auth/github');
 const providers = require('../src/providers');
-const fetch = require('isomorphic-unfetch');
-
+const { getUser } = require('../auth/authentication');
 
 const router = express.Router();
 
-router.get(api.tree, (req, res) => {
+const authMdw = (req, res, next) => {
+  const { authorization } = req.headers;
+  if (authorization) {
+    const parseToken = compose(trim, last, split('token'));
+    getUser(parseToken(authorization))
+      .then((user) => {
+        req.user = user;
+        next();
+      });
+  } else {
+    next();
+  }
+};
+
+router.get(api.tree, authMdw, (req, res) => {
   providers.getProvider(req.params.provider)
-    .getRepository(req.params.name)
+    .getRepository(req.user, req.params.name)
     .then(repo => git.browse(repo, req.params.path, req.params.ref))
     .then(data => res.json(data))
     .catch(e => logger.error(e));
 });
 
-router.get(api.refs, (req, res) => {
+router.get(api.refs, authMdw, (req, res) => {
   providers.getProvider(req.params.provider)
-    .getRepository(req.params.name)
+    .getRepository(req.user, req.params.name)
     .then(repo => git.refs(repo))
     .then(data => res.json(data))
     .catch(e => logger.error(e));
@@ -35,13 +51,8 @@ router.get(api.authGithubCb, (req, res) => {
     .then(accessToken => req.nextjs.render(req, res, '/auth/github/cb', { accessToken }));
 });
 
-router.get(api.user, (req, res) => {
-  const { authorization } = req.headers;
-  if (authorization) {
-    fetch('https://api.github.com/user', { headers: { authorization } })
-      .then(x => x.json())
-      .then(r => res.json(r));
-  }
+router.get(api.user, authMdw, (req, res) => {
+  res.json(req.user);
 });
 
 router.get(api.index, (req, res) => {

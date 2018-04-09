@@ -14,7 +14,7 @@ const listRepos = req => gitolite.listRepos(req)
 
 const getLocalRepoWd = repoPath => `/tmp/gitwiki/local/${repoPath}`;
 
-const getRepository = (repoPath) => {
+const getRepository = (user, repoPath) => {
   // TODO check gitolite authorization
   const uri = `git@localhost:${repoPath}`;
   const dest = getLocalRepoWd(repoPath);

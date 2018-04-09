@@ -7,7 +7,7 @@ export default class Widget extends React.PureComponent {
   static propTypes = {
     fetchUser: PropTypes.func.isRequired,
     user: PropTypes.shape({
-      avatar_url: PropTypes.string,
+      avatar: PropTypes.string,
     }).isRequired,
   }
 
@@ -18,7 +18,7 @@ export default class Widget extends React.PureComponent {
   render() {
     if (isLoggedIn()) {
       return (
-        <Avatar size="large" src={this.props.user.avatar_url} />
+        <Avatar size="large" src={this.props.user.avatar} />
       );
     }
     return (

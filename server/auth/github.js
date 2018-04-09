@@ -24,3 +24,6 @@ module.exports.getAccessToken = (code) => {
     .then(response => response.text()
       .then(compose(prop('access_token'), querystring.parse)));
 };
+
+module.exports.getUserInfo = authHeader => fetch('https://api.github.com/user', { headers: { authorization: authHeader } })
+  .then(x => x.json());

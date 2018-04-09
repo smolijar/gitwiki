@@ -16,8 +16,8 @@ const listRepos = (req) => {
 
 const getLocalRepoWd = repoPath => `/tmp/gitwiki/github/${repoPath}`;
 
-const getRepository = (repoName) => {
-  const uri = `https://github.com/<user>/${repoName}`;
+const getRepository = (user, repoName) => {
+  const uri = `https://github.com/${user.username}/${repoName}`;
   const dest = getLocalRepoWd(repoName);
   const getCred = () => Cred.userpassPlaintextNew('<personal access token>', 'x-oauth-basic');
   return git.getRepo(uri, dest, getCred);

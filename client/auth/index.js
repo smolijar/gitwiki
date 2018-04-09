@@ -2,7 +2,12 @@ import { compose } from 'ramda';
 
 const STORAGE_KEY = 'github_access';
 
-const store = (token) => { localStorage.setItem(STORAGE_KEY, token); return token; };
+const store = (token) => {
+  localStorage.setItem(STORAGE_KEY, token);
+  document.cookie = `token=${token}`;
+  return token;
+};
+
 const retrieve = () => localStorage.getItem(STORAGE_KEY);
 
 const isLoggedIn = () => typeof localStorage !== 'undefined' && retrieve();
