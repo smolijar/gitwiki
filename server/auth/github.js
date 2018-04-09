@@ -1,9 +1,10 @@
 const querystring = require('querystring');
-const { getConfig } = require('../config');
 const fetch = require('isomorphic-unfetch');
 const {
   merge, compose, prop,
 } = require('ramda');
+const { getConfig } = require('../config');
+const { users, tokens } = require('../storage');
 
 const githubConfig = getConfig('auth.oauth2.github');
 
@@ -27,3 +28,10 @@ module.exports.getAccessToken = (code) => {
 
 module.exports.getUserInfo = authHeader => fetch('https://api.github.com/user', { headers: { authorization: authHeader } })
   .then(x => x.json());
+
+module.exports.savePersonalToken = (user, token) => {
+  users.set(user.accessToken, { ...user, githubPersonalAccessTokenSet: true });
+  tokens.set(user.username, token);
+};
+
+module.exports.getPersonalToken = user => tokens.get(user.username);

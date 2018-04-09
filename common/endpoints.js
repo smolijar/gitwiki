@@ -5,6 +5,7 @@ const endpoints = {
     index: '/api/v1/repo',
     user: '/api/v1/user',
     authGithub: '/api/v1/auth/github',
+    authGithubPersonalToken: '/api/v1/auth/github/personal-access-token',
     authGithubCb: '/api/v1/auth/github/cb',
   },
   front: {

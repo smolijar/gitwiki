@@ -23,6 +23,7 @@
   "dependencies": {
     "@keyv/sqlite": "^1.2.12",
     "antd": "^3.2.1",
+    "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
     "file-icons-js": "github:websemantics/file-icons-js",

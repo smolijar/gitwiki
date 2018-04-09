@@ -1,17 +1,13 @@
-const Keyv = require('keyv');
 const { getUserInfo } = require('./github');
-const logger = require('../src/logger');
-const { getConfig } = require('../config');
 const { assoc } = require('ramda');
-
-const users = new Keyv(getConfig('storage'), { namespace: 'users' });
-users.on('error', logger.error);
+const { users } = require('../storage');
 
 const transformUser = user => ({
   avatar: user.avatar_url,
   username: user.login,
   accessToken: user.accessToken,
   name: user.name,
+  githubPersonalAccessTokenSet: Boolean(user.githubPersonalAccessTokenSet),
 });
 
 module.exports.getUser = accessToken => users.get(accessToken)

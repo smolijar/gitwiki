@@ -5,9 +5,10 @@ const {
 const logger = require('../src/logger');
 const git = require('../src/git');
 const { api } = require('../../common/endpoints');
-const { getRedirectUri, getAccessToken } = require('../auth/github');
+const { getRedirectUri, getAccessToken, savePersonalToken } = require('../auth/github');
 const providers = require('../src/providers');
 const { getUser } = require('../auth/authentication');
+const { users, tokens } = require('../storage');
 
 const router = express.Router();
 
@@ -53,6 +54,15 @@ router.get(api.authGithubCb, (req, res) => {
 
 router.get(api.user, authMdw, (req, res) => {
   res.json(req.user);
+});
+
+router.post(api.authGithubPersonalToken, authMdw, (req, res) => {
+  const { personalToken } = req.body;
+  if (personalToken) {
+    savePersonalToken(req.user, personalToken);
+    users.get(req.user.accessToken)
+      .then(u => res.json(u));
+  }
 });
 
 router.get(api.index, (req, res) => {
