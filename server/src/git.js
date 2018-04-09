@@ -4,18 +4,12 @@ const {
   sortWith, ascend, descend, prop, propOr,
 } = require('ramda');
 
-const getLocalRepoWd = repoPath => `/tmp/gitwiki/${repoPath}`;
 
-module.exports.getLocalRepository = (repoPath) => {
-  // TODO check gitolite authorization
-  const uri = `git@localhost:${repoPath}`;
-  const dest = getLocalRepoWd(repoPath);
+module.exports.getRepo = (uri, dest, getCred) => {
   const cloneOpts = {};
   cloneOpts.fetchOpts = {
     callbacks: {
-      credentials(url, userName) {
-        return NodeGit.Cred.sshKeyFromAgent(userName);
-      },
+      credentials: getCred,
     },
   };
   return NodeGit.Clone(uri, dest, cloneOpts)
