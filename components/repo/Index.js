@@ -5,13 +5,12 @@ import { splitEvery } from 'ramda';
 import IndexEntry, { entryType } from './IndexEntry';
 import PersonalTokenContainer from '../../containers/user/PersonalTokenContainer';
 
+const indexType = PropTypes.arrayOf(entryType);
+export { indexType };
+
 export default class Index extends React.PureComponent {
   static propTypes = {
-    fetchIndex: PropTypes.func.isRequired,
-    index: PropTypes.arrayOf(entryType).isRequired,
-  }
-  componentDidMount() {
-    this.props.fetchIndex();
+    index: indexType.isRequired,
   }
 
   render() {
@@ -28,7 +27,7 @@ export default class Index extends React.PureComponent {
                 ))
               }
             </Row>
-          )) }
+          ))}
         <PersonalTokenContainer />
       </div>
     );
