@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - GitHub authentication
 - User widget
 - path-to-regexp dep
+- Configurable super basic gitolite cli wrapper
 
 ### Changed
 - Refactor routing

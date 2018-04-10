@@ -1,11 +1,12 @@
 const querystring = require('querystring');
-const config = require('../../.gitwiki.config');
 const fetch = require('isomorphic-unfetch');
 const {
-  path, merge, compose, prop,
+  merge, compose, prop,
 } = require('ramda');
+const { getConfig } = require('../config');
+const { users, tokens } = require('../storage');
 
-const githubConfig = path('auth.oauth2.github'.split('.'), config);
+const githubConfig = getConfig('auth.oauth2.github');
 
 module.exports.getRedirectUri = () => {
   const query = querystring.stringify({
@@ -24,3 +25,13 @@ module.exports.getAccessToken = (code) => {
     .then(response => response.text()
       .then(compose(prop('access_token'), querystring.parse)));
 };
+
+module.exports.getUserInfo = authHeader => fetch('https://api.github.com/user', { headers: { authorization: authHeader } })
+  .then(x => x.json());
+
+module.exports.savePersonalToken = (user, token) => {
+  users.set(user.accessToken, { ...user, githubPersonalAccessTokenSet: true });
+  tokens.set(user.username, token);
+};
+
+module.exports.getPersonalToken = user => tokens.get(user.username);

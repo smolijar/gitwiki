@@ -34,6 +34,11 @@ export default class extends React.PureComponent {
       <Layout>
         <Breadcrumb style={{ margin: '16px 0' }}>
           <Breadcrumb.Item>
+            <Link href={{ pathname: '/repo' }} as={compile(front.index)()}>
+              <a>repos</a>
+            </Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
             <Link href={{ pathname: '/repo/tree', query }} as={compile(front.tree)(query)}>
               <a>{repo.name}</a>
             </Link>

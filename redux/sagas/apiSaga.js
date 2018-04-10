@@ -21,10 +21,29 @@ export function* fetchUser(action) {
   yield put(actions.user.setUser(data));
 }
 
+export function* fetchIndex(action) {
+  const data = yield fetchApi(compile(api.index)(action.data));
+  yield put(actions.repo.setIndex(data));
+}
+
+export function* postGithubPersonalToken(action) {
+  yield fetchApi(compile(api.authGithubPersonalToken)(action.data), {
+    options: {
+      method: 'POST',
+      body: action.data,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  });
+}
+
 export default function* () {
   yield all([
     takeLatest(types.repo.FETCH_TREE, fetchTree),
     takeLatest(types.repo.FETCH_REFS, fetchRefs),
     takeLatest(types.user.FETCH_USER, fetchUser),
+    takeLatest(types.repo.FETCH_INDEX, fetchIndex),
+    takeLatest(types.user.POST_GITHUB_PERSONAL_TOKEN, postGithubPersonalToken),
   ]);
 }

@@ -6,5 +6,10 @@ module.exports = {
         client_secret: 'CLIENT_SECRET',
       }
     }
-  }
+  },
+  gitolite: {
+    bin: '/home/git/bin/gitolite',
+    home: '/home/git',
+  },
+  storage: 'sqlite:///home/git/database.sqlite',
 };
