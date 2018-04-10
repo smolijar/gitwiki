@@ -18,15 +18,15 @@ const createSignature = (name, email) => NodeGit.Signature.create(
 
 const applyChange = curry((repo, change) => {
   const absPath = path.join(repo.workdir(), change.path);
-  return ensureDir(path.dirname(absPath))
+  return change.remove ? fse.remove(absPath) : ensureDir(path.dirname(absPath))
     .then(fse.writeFile(absPath, change.content));
 });
 
 async function writeTree(repo, changes) {
   await Promise.all(changes.map(applyChange(repo)));
   const index = await repo.refreshIndex();
-  const add = index.addByPath.bind(index);
-  await Promise.all(changes.map(compose(add, prop('path'))));
+  const process = change => (change.remove ? index.removeByPath : index.addByPath).bind(index)(change.path);
+  await Promise.all(changes.map(process));
   await index.write();
   return index.writeTree();
 }
