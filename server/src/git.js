@@ -1,5 +1,9 @@
 const NodeGit = require('nodegit');
 const path = require('path');
+const tmp = require('tmp');
+const promisify = require("promisify-node");
+const fse = promisify(require("fs-extra"));
+const ensureDir = promisify(fse.ensureDir);
 const {
   sortWith, ascend, descend, prop, propOr,
 } = require('ramda');
@@ -81,3 +85,43 @@ module.exports.browse = (repo, treePath = null, ref = null) => {
         });
     });
 };
+
+const getTmpDir = new Promise((res, rej) => {
+  tmp.dir(function _tempDirCreated(err, path, cleanupCallback) {
+    if (err) rej(err);
+    res(path);
+  });
+})
+
+const createSignature = (name, email) => NodeGit.Signature.create(name,
+  email, new Date().getTime() / 1000, - new Date().getTimezoneOffset());
+
+async function commit(repo, user, changes, message, refName = 'master') {
+  const { email, name } = user;
+
+  const author = createSignature(name, email)
+  const committer = author;
+  const { ref } = await module.exports.findRef(repo, refName);
+  // const tmpdir = await getTmpDir.then();
+
+  await Promise.all(
+    changes.map(change => {
+      const filePath = path.join(repo.workdir(), change.path);
+      return ensureDir(path.dirname(filePath))
+        .then(fse.writeFile(filePath, change.content))
+    })
+  )
+  const index = await repo.refreshIndex();
+  await Promise.all(
+    changes.map(change => index.addByPath(change.path))
+  )
+  await index.write();
+  const oid = await index.writeTree();
+
+
+  const referenceNode = await NodeGit.Reference.nameToId(repo, ref);
+  const parentCommit = await repo.getCommit(referenceNode);
+  const commitId = await repo.createCommit(ref, author, committer, message, oid, [parentCommit]);
+}
+
+module.exports.commit = commit;
