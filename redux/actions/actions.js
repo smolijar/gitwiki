@@ -12,5 +12,6 @@ export default {
   user: {
     fetchUser: data => ({ type: types.user.FETCH_USER, data }),
     setUser: data => ({ type: types.user.SET_USER, data }),
+    postGithubPersonalToken: data => ({ type: types.user.POST_GITHUB_PERSONAL_TOKEN, data }),
   },
 };

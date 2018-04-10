@@ -8,7 +8,7 @@ const { api } = require('../../common/endpoints');
 const { getRedirectUri, getAccessToken, savePersonalToken } = require('../auth/github');
 const providers = require('../src/providers');
 const { getUser } = require('../auth/authentication');
-const { users, tokens } = require('../storage');
+const { users } = require('../storage');
 
 const router = express.Router();
 
@@ -65,8 +65,8 @@ router.post(api.authGithubPersonalToken, authMdw, (req, res) => {
   }
 });
 
-router.get(api.index, (req, res) => {
-  providers.listRepos(req)
+router.get(api.index, authMdw, (req, res) => {
+  providers.listRepos(req.user)
     .then(r => res.json(r));
 });
 

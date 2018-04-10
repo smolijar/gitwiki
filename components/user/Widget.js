@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Avatar, Button } from 'antd';
 import { getAccessToken, isLoggedIn } from '../../client/auth';
+import userProp from './userProp';
+
 
 export default class Widget extends React.PureComponent {
   static propTypes = {
     fetchUser: PropTypes.func.isRequired,
-    user: PropTypes.shape({
-      avatar: PropTypes.string,
-    }).isRequired,
+    user: userProp.isRequired,
   }
 
   componentDidMount() {

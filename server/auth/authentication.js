@@ -1,4 +1,4 @@
-const { getUserInfo } = require('./github');
+const { getUserInfo, getPersonalToken } = require('./github');
 const { assoc } = require('ramda');
 const { users } = require('../storage');
 
@@ -7,13 +7,17 @@ const transformUser = user => ({
   username: user.login,
   accessToken: user.accessToken,
   name: user.name,
-  githubPersonalAccessTokenSet: Boolean(user.githubPersonalAccessTokenSet),
+  githubPersonalAccessTokenSet: user.githubPersonalAccessTokenSet,
 });
 
 module.exports.getUser = accessToken => users.get(accessToken)
   .then((user) => {
     if (!user) {
-      return getUserInfo(`token ${accessToken}`)
+      return Promise.all([
+        getUserInfo(`token ${accessToken}`),
+        getPersonalToken(accessToken),
+      ])
+        .then(([usr, token]) => ({ ...usr, githubPersonalAccessTokenSet: Boolean(token) }))
         .then(assoc('accessToken', accessToken))
         .then(transformUser)
         .then((u) => { users.set(accessToken, u); return u; });

@@ -7,7 +7,7 @@ const {
 const providers = [github, local];
 const pickRepo = pickAll(['name', 'description', 'provider']);
 
-const listRepos = req => Promise.all(providers.map(p => p.listRepos(req)))
+const listRepos = user => Promise.all(providers.map(p => p.listRepos(user)))
   .then(unnest)
   .then(map(pickRepo));
 

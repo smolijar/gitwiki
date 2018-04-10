@@ -11,5 +11,6 @@ export default {
   user: {
     FETCH_USER: 'FETCH_USER',
     SET_USER: 'SET_USER',
+    POST_GITHUB_PERSONAL_TOKEN: 'POST_GITHUB_PERSONAL_TOKEN',
   },
 };

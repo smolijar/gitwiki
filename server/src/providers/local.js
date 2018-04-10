@@ -9,7 +9,7 @@ const { Cred } = require('nodegit');
 
 const entryFromName = compose(merge({ provider: 'local' }), objOf('name'));
 
-const listRepos = req => gitolite.listRepos(req)
+const listRepos = usr => gitolite.listRepos(usr)
   .then(map(entryFromName));
 
 const getLocalRepoWd = repoPath => `/tmp/gitwiki/local/${repoPath}`;
