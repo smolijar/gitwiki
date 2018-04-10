@@ -5,7 +5,7 @@ const promisify = require("promisify-node");
 const fse = promisify(require("fs-extra"));
 const ensureDir = promisify(fse.ensureDir);
 const {
-  sortWith, ascend, descend, prop, propOr,
+  sortWith, ascend, descend, prop, propOr, curry, compose
 } = require('ramda');
 
 
@@ -96,31 +96,38 @@ const getTmpDir = new Promise((res, rej) => {
 const createSignature = (name, email) => NodeGit.Signature.create(name,
   email, new Date().getTime() / 1000, - new Date().getTimezoneOffset());
 
-async function commit(repo, user, changes, message, refName = 'master') {
-  const { email, name } = user;
+const applyChange = curry((repo, change) => {
+  const absPath = path.join(repo.workdir(), change.path);
+  return ensureDir(path.dirname(absPath))
+    .then(fse.writeFile(absPath, change.content))
+})
 
-  const author = createSignature(name, email)
+async function writeTree(repo, changes) {
+  await Promise.all(changes.map(applyChange(repo)))
+  const index = await repo.refreshIndex();
+  const add = index.addByPath.bind(index);
+  await Promise.all(changes.map(compose(add, prop('path'))))
+  await index.write();
+  return index.writeTree();
+}
+
+async function getReferenceCommit(repo, ref) {
+  const referenceNode = await NodeGit.Reference.nameToId(repo, ref);
+  return parentCommit = await repo.getCommit(referenceNode);
+}
+
+async function commit(repo, user, changes, message, refName = 'master') {
+  const author = createSignature(user.name, user.email)
   const committer = author;
   const { ref } = await module.exports.findRef(repo, refName);
+
   // const tmpdir = await getTmpDir.then();
+  
+  const [oid, parentCommit] = await Promise.all([
+    writeTree(repo, changes),
+    getReferenceCommit(repo, ref)
+  ]);
 
-  await Promise.all(
-    changes.map(change => {
-      const filePath = path.join(repo.workdir(), change.path);
-      return ensureDir(path.dirname(filePath))
-        .then(fse.writeFile(filePath, change.content))
-    })
-  )
-  const index = await repo.refreshIndex();
-  await Promise.all(
-    changes.map(change => index.addByPath(change.path))
-  )
-  await index.write();
-  const oid = await index.writeTree();
-
-
-  const referenceNode = await NodeGit.Reference.nameToId(repo, ref);
-  const parentCommit = await repo.getCommit(referenceNode);
   const commitId = await repo.createCommit(ref, author, committer, message, oid, [parentCommit]);
 }
 
