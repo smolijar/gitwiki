@@ -1,7 +1,7 @@
 const querystring = require('querystring');
 const fetch = require('isomorphic-unfetch');
 const {
-  merge, compose, prop, map, assoc, apply, head
+  merge, compose, prop, assoc, apply, head,
 } = require('ramda');
 const { getConfig } = require('../config');
 const { users, tokens } = require('../storage');
@@ -26,7 +26,7 @@ module.exports.getAccessToken = (code) => {
       .then(compose(prop('access_token'), querystring.parse)));
 };
 
-module.exports.getUserInfo = authHeader => {
+module.exports.getUserInfo = (authHeader) => {
   const options = { headers: { authorization: authHeader } };
   return Promise.all([
     fetch('https://api.github.com/user/emails', options)
@@ -36,7 +36,7 @@ module.exports.getUserInfo = authHeader => {
       .then(x => x.json()),
   ])
     .then(apply(assoc('email')));
-}
+};
 
 module.exports.savePersonalToken = (user, token) => {
   users.set(user.accessToken, { ...user, githubPersonalAccessTokenSet: true });
