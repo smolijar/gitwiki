@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Github repository listing
+- Gitolite repository listing
+- Gitolite CLI wrapper
+- Repository providers
+- User cachning
+- Session cookie for ssr
+- GitHub personal key adding
+- GitHub repository browsing
+
+### Changed
+- Repo url contains provider
+
 
 ## [0.4.0] - 2018-03-26
 ### Added
