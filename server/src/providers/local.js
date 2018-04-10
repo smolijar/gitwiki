@@ -1,17 +1,23 @@
 const {
-  map, compose, objOf, merge,
+  map, compose, objOf, merge, zip, head, pipe, filter, propOr, last,
 } = require('ramda');
 const gitolite = require('../gitolite');
 const git = require('../git');
 const types = require('./types');
 const { Cred } = require('nodegit');
 
+const username = propOr('@all', 'username');
 
 const entryFromName = compose(merge({ provider: 'local' }), objOf('name'));
 
 const listRepos = usr => gitolite.listRepos(usr)
-  .then(map(entryFromName));
-
+  .then(repos => Promise.all(repos.map(repo => gitolite.access(repo, username(usr), 'R')))
+    .then(zip(repos))
+    .then(pipe(
+      filter(last),
+      map(head),
+      map(entryFromName),
+    )));
 const getLocalRepoWd = repoPath => `/tmp/gitwiki/local/${repoPath}`;
 
 const getRepository = (user, repoPath) => {
