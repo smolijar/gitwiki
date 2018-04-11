@@ -48,6 +48,16 @@ export default class extends React.PureComponent {
             style={{ lineHeight: '63px' }}
           >
             <Menu.Item>
+              <Link href="/repo">
+                <a>Repositories</a>
+              </Link>
+            </Menu.Item>
+          </Menu>
+          <Menu
+            mode="horizontal"
+            style={{ lineHeight: '63px', float: 'right', marginTop: '-65px' }}
+          >
+            <Menu.Item>
               <WidgetContainer />
             </Menu.Item>
           </Menu>
