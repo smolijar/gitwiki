@@ -25,10 +25,12 @@ const getCredentialCallback = () => (url, userName) => Cred.sshKeyFromAgent(user
 const getRepository = (user, repoPath) => {
   // TODO check gitolite authorization
   const uri = `git@localhost:${repoPath}`;
-  const dest = getLocalRepoWd(repoPath);  
+  const dest = getLocalRepoWd(repoPath);
   return git.getRepo(uri, dest, getCredentialCallback());
 };
 
 const provider = types.LOCAL;
 
-module.exports = { listRepos, getRepository, provider, getCredentialCallback };
+module.exports = {
+  listRepos, getRepository, provider, getCredentialCallback,
+};

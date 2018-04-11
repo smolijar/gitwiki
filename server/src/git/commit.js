@@ -3,14 +3,12 @@ const path = require('path');
 const promisify = require('promisify-node');
 const fse = promisify(require('fs-extra'));
 const { findRef } = require('./refs');
-const { getRepo, pushOrigin } = require('./transport');
+const { pushOrigin } = require('./transport');
 
 const ensureDir = promisify(fse.ensureDir);
 
 
-const {
-  prop, curry, compose,
-} = require('ramda');
+const { curry } = require('ramda');
 
 const createSignature = (name, email) => NodeGit.Signature.create(
   name,
@@ -26,7 +24,9 @@ const applyChange = curry((repo, change) => {
 async function writeTree(repo, changes) {
   await Promise.all(changes.map(applyChange(repo)));
   const index = await repo.refreshIndex();
-  const process = change => (change.remove ? index.removeByPath : index.addByPath).bind(index)(change.path);
+  const process = change => (
+    change.remove ? index.removeByPath : index.addByPath
+  ).bind(index)(change.path);
   await Promise.all(changes.map(process));
   await index.write();
   return index.writeTree();
@@ -50,10 +50,8 @@ async function commit(repo, user, changes, message, refName = 'master') {
   return repo.createCommit(ref, author, committer, message, oid, [parentCommit]);
 }
 
-const commitAndPush = (repo, user, changes, message, refName = 'master') => {
-  return commit(repo, user, changes, message, refName = 'master')
-    .then(() => pushOrigin(repo))
-}
+const commitAndPush = (repo, user, changes, message, refName = 'master') => commit(repo, user, changes, message, refName)
+  .then(() => pushOrigin(repo));
 
 module.exports = {
   commit,
