@@ -7,6 +7,7 @@ const transformUser = user => ({
   username: user.login,
   accessToken: user.accessToken,
   name: user.name,
+  email: user.email,
   githubPersonalAccessTokenSet: user.githubPersonalAccessTokenSet,
 });
 

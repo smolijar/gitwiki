@@ -1,7 +1,7 @@
 const querystring = require('querystring');
 const fetch = require('isomorphic-unfetch');
 const {
-  merge, compose, prop,
+  merge, compose, prop, assoc, apply, head,
 } = require('ramda');
 const { getConfig } = require('../config');
 const { users, tokens } = require('../storage');
@@ -11,7 +11,7 @@ const githubConfig = getConfig('auth.oauth2.github');
 module.exports.getRedirectUri = () => {
   const query = querystring.stringify({
     client_id: githubConfig.client_id,
-    scope: 'repo user:read',
+    scope: 'repo user:read user:email',
   });
   return `https://github.com/login/oauth/authorize?${query}`;
 };
@@ -26,8 +26,17 @@ module.exports.getAccessToken = (code) => {
       .then(compose(prop('access_token'), querystring.parse)));
 };
 
-module.exports.getUserInfo = authHeader => fetch('https://api.github.com/user', { headers: { authorization: authHeader } })
-  .then(x => x.json());
+module.exports.getUserInfo = (authHeader) => {
+  const options = { headers: { authorization: authHeader } };
+  return Promise.all([
+    fetch('https://api.github.com/user/emails', options)
+      .then(x => x.json())
+      .then(compose(prop('email'), head)),
+    fetch('https://api.github.com/user', options)
+      .then(x => x.json()),
+  ])
+    .then(apply(assoc('email')));
+};
 
 module.exports.savePersonalToken = (user, token) => {
   users.set(user.accessToken, { ...user, githubPersonalAccessTokenSet: true });
