@@ -3,6 +3,7 @@ const path = require('path');
 const promisify = require('promisify-node');
 const fse = promisify(require('fs-extra'));
 const { findRef } = require('./refs');
+const { getRepo, pushOrigin } = require('./transport');
 
 const ensureDir = promisify(fse.ensureDir);
 
@@ -49,4 +50,12 @@ async function commit(repo, user, changes, message, refName = 'master') {
   return repo.createCommit(ref, author, committer, message, oid, [parentCommit]);
 }
 
-module.exports = commit;
+const commitAndPush = (repo, user, changes, message, refName = 'master') => {
+  return commit(repo, user, changes, message, refName = 'master')
+    .then(() => pushOrigin(repo))
+}
+
+module.exports = {
+  commit,
+  commitAndPush,
+};

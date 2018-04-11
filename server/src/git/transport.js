@@ -1,6 +1,6 @@
 const NodeGit = require('nodegit');
 
-module.exports = (uri, dest, getCred) => {
+const getRepo = (uri, dest, getCred) => {
   const cloneOpts = {};
   cloneOpts.fetchOpts = {
     callbacks: {
@@ -8,6 +8,7 @@ module.exports = (uri, dest, getCred) => {
     },
   };
   return NodeGit.Clone(uri, dest, cloneOpts)
+    .then(repo => { repo.callbacks = cloneOpts.fetchOpts.callbacks; return repo; })
     .catch((e) => {
       let repository;
       // exists and is not an empty directory
@@ -22,3 +23,12 @@ module.exports = (uri, dest, getCred) => {
       throw e;
     });
 };
+
+async function pushOrigin(repo) {
+  const remoteRef = await repo.getRemote('origin');
+  await remoteRef.push(["refs/heads/master:refs/heads/master"], {
+    callbacks: repo.callbacks
+  })
+}
+
+module.exports = { getRepo, pushOrigin }

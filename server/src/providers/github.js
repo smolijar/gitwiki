@@ -16,13 +16,18 @@ const listRepos = (user) => {
 
 const getLocalRepoWd = repoPath => `/tmp/gitwiki/github/${repoPath}`;
 
-const getRepository = (user, repoName) => getPersonalToken(user).then((personalAccessToken) => {
+const getCredentialCallback = user => new Promise((res, rej) => getPersonalToken(user)
+  .then(pesonalToken => res(
+    () => Cred.userpassPlaintextNew(pesonalToken, 'x-oauth-basic')
+  ))
+);
+
+const getRepository = (user, repoName) => getCredentialCallback(user).then((credentialCb) => {
   const uri = `https://github.com/${user.username}/${repoName}`;
   const dest = getLocalRepoWd(repoName);
-  const getCred = () => Cred.userpassPlaintextNew(personalAccessToken, 'x-oauth-basic');
-  return git.getRepo(uri, dest, getCred);
+  return git.getRepo(uri, dest, credentialCb);
 });
 
 const provider = types.GITHUB;
 
-module.exports = { listRepos, provider, getRepository };
+module.exports = { listRepos, provider, getRepository, getCredentialCallback };

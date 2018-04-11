@@ -1,6 +1,6 @@
-const commit = require('./commit');
+const { commit, commitAndPush } = require('./commit');
 const { refs, findRef } = require('./refs');
-const getRepo = require('./getRepo');
+const { getRepo, pushOrigin } = require('./transport');
 const browse = require('./browse');
 
 module.exports = {
@@ -8,5 +8,7 @@ module.exports = {
   refs,
   findRef,
   getRepo,
+  pushOrigin,
   browse,
+  commitAndPush,
 }

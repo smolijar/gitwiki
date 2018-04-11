@@ -20,14 +20,15 @@ const listRepos = usr => gitolite.listRepos(usr)
     )));
 const getLocalRepoWd = repoPath => `/tmp/gitwiki/local/${repoPath}`;
 
+const getCredentialCallback = () => (url, userName) => Cred.sshKeyFromAgent(userName);
+
 const getRepository = (user, repoPath) => {
   // TODO check gitolite authorization
   const uri = `git@localhost:${repoPath}`;
-  const dest = getLocalRepoWd(repoPath);
-  const getCred = (url, userName) => Cred.sshKeyFromAgent(userName);
-  return git.getRepo(uri, dest, getCred);
+  const dest = getLocalRepoWd(repoPath);  
+  return git.getRepo(uri, dest, getCredentialCallback());
 };
 
 const provider = types.LOCAL;
 
-module.exports = { listRepos, getRepository, provider };
+module.exports = { listRepos, getRepository, provider, getCredentialCallback };
