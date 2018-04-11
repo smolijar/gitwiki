@@ -22,6 +22,8 @@ export default class extends React.PureComponent {
       PropTypes.arrayOf(PropTypes.node),
       PropTypes.node,
     ]),
+    breadcrumb: PropTypes.node,
+    sider: PropTypes.node,
   }
   static defaultProps = {
     children: [],
@@ -53,7 +55,13 @@ export default class extends React.PureComponent {
           </Menu>
         </Header>
         <Content style={{ padding: '0 50px' }}>
-          {this.props.children}
+          {this.props.breadcrumb}
+          <Layout style={{ padding: '24px 0', background: '#fff' }}>
+            {this.props.sider}
+            <Content style={{ padding: '0 24px', minHeight: 280 }}>
+              {this.props.children}
+            </Content>
+          </Layout>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
           GitWiki ©2018

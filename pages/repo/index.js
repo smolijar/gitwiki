@@ -27,11 +27,7 @@ class Index extends React.PureComponent {
   render() {
     return (
       <AppLayout>
-        <Layout style={{ padding: '24px 0', background: '#fff' }}>
-          <Content style={{ padding: '0 24px', minHeight: 280 }}>
-            <RepoIndex index={this.props.index} />
-          </Content>
-        </Layout>
+        <RepoIndex index={this.props.index} />
       </AppLayout>
     );
   }
