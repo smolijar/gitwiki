@@ -101,6 +101,9 @@ export default class extends React.PureComponent {
             font-weight: 200;
             cursor: pointer;
           }
+          div.logo:hover {
+            opacity: 0.68;
+          }
           div.logo img {
             width: 150px;            
           }
