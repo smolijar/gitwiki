@@ -107,6 +107,9 @@ export default class extends React.PureComponent {
           div.logo img {
             width: 150px;            
           }
+          body > div:first-child, body > div:first-child > div {
+            height: 100%;
+          }
         `}
         </style>
       </Layout>
