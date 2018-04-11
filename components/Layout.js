@@ -8,7 +8,7 @@ import Router from 'next/router';
 import WidgetContainer from '../containers/user/WidgetContainer';
 
 const {
-  Header, Content, Footer,
+  Header, Content, Footer, Sider
 } = Layout;
 
 
@@ -29,6 +29,7 @@ export default class extends React.PureComponent {
     children: [],
   }
   render() {
+    const sider = this.props.sider && <Sider width={200} style={{ background: '#fff' }}>{this.props.sider}</Sider>
     return (
       <Layout className="main-frame">
         <Head>
@@ -54,7 +55,7 @@ export default class extends React.PureComponent {
         <Content style={{ padding: '0 50px' }}>
           {this.props.breadcrumb}
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
-            {this.props.sider}
+            {sider}
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
               {this.props.children}
             </Content>

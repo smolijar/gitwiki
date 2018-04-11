@@ -37,7 +37,6 @@ class Tree extends React.Component {
   }
 
   getSider = () => (
-    <Sider width={200} style={{ background: '#fff' }}>
       <Menu
         mode="inline"
         defaultSelectedKeys={['1']}
@@ -57,17 +56,22 @@ class Tree extends React.Component {
           })
         }
       </Menu>
-    </Sider>
   );
 
+  getContent = () => (
+    <pre>{this.props.repo.blob.content}</pre>
+  )
+
   render() {
+    let left = null;
+    let main = this.getSider();
+    if(this.props.repo.blob) {
+      left = main;
+      main = this.getContent()
+    }
     return (
-      <AppLayout breadcrumb={<Breadcrumb repo={this.props.repo.meta} />} sider={this.getSider()}>
-        {
-          this.props.repo.blob && (
-            <pre>{this.props.repo.blob.content}</pre>
-          )
-        }
+      <AppLayout breadcrumb={<Breadcrumb repo={this.props.repo.meta} />} sider={left}>
+        { main }
         <style jsx global>{`
         span.node {
           color: rgba(0, 0, 0, 0.65);
