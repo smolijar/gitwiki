@@ -30,7 +30,7 @@ export default class extends React.PureComponent {
   }
   render() {
     return (
-      <Layout>
+      <Layout className="main-frame">
         <Head>
           <link rel="stylesheet" type="text/css" href="/static/antd/antd.css" />
           <link rel="stylesheet" type="text/css" href="/static/nprogress/nprogress.css" />
@@ -39,15 +39,12 @@ export default class extends React.PureComponent {
         <Header className="header">
           <div className="logo">
             <Link href="/">
-              <span>
-                <strong>Git</strong><Icon type="fork" />Wiki
-              </span>
+              <img src="/static/logo.png" />
             </Link>
           </div>
           <Menu
-            theme="dark"
             mode="horizontal"
-            style={{ lineHeight: '64px' }}
+            style={{ lineHeight: '63px' }}
           >
             <Menu.Item>
               <WidgetContainer />
@@ -67,6 +64,23 @@ export default class extends React.PureComponent {
           GitWiki ©2018
         </Footer>
         <style jsx global>{`
+          .ant-layout-header {
+            background-color: #fff !important;
+            z-index: 1;
+          }
+          .main-frame::before {
+            content: ' ';
+            display: block;
+            height: 0px;
+            width: 100%;
+            top: 63px;
+            position: absolute;
+            box-shadow: 0 0 12px 2px #bbb;
+            z-index: 0;
+          }
+          .ant-layout-header .ant-menu {
+            background-color: #fff;
+          }
           div.logo {
             float: left;
             width: 150px;
@@ -75,6 +89,9 @@ export default class extends React.PureComponent {
             font-size: 28px;
             font-weight: 200;
             cursor: pointer;
+          }
+          div.logo img {
+            width: 150px;            
           }
         `}
         </style>
