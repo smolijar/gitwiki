@@ -9,6 +9,7 @@ module.exports = (repo, treePath = null, ref = null) => {
     name: entry.name(),
     path: entry.path(),
     isDirectory: entry.isDirectory(),
+    sha: entry.sha(),
   });
   const sortEntries = sortWith([descend(prop('isDirectory')), ascend(prop('name'))]);
   const formatTree = tree => ({ tree: sortEntries(tree.entries().map(formatEntry)) });
