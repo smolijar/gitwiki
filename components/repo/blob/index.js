@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { List } from 'antd';
 import { compile } from 'path-to-regexp';
 import { front } from '../../../common/endpoints';
+import Highlight from 'react-highlight.js';
 
 import { Tabs } from 'antd';
 const TabPane = Tabs.TabPane;
@@ -20,7 +21,7 @@ export default class Blob extends React.PureComponent {
       <div className="card-container">
         <Tabs type="card">
           <TabPane tab="Source code" key="1">
-            <pre>{this.props.blob.content}</pre>
+            <Highlight>{this.props.blob.content}</Highlight>
           </TabPane>
           <TabPane tab="Preview" key="2">
             TODO PREVIEW

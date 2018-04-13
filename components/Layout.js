@@ -38,6 +38,7 @@ export default class extends React.PureComponent {
           <link rel="stylesheet" type="text/css" href="/static/antd/antd.css" />
           <link rel="stylesheet" type="text/css" href="/static/nprogress/nprogress.css" />
           <link rel="stylesheet" type="text/css" href="/static/file-icons-js/css/style.css" />
+          <link rel='stylesheet' href='https://highlightjs.org/static/demo/styles/github.css'/>
         </Head>
         <Header className="header">
           <div className="logo">
