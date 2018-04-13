@@ -10,6 +10,7 @@ import actions from '../../redux/actions/actions';
 import { api } from '../../common/endpoints';
 import IndexList from '../../components/repo/index/List';
 import IndexMenu from '../../components/repo/index/Menu';
+import Blob from '../../components/repo/blob';
 
 class Tree extends React.Component {
   static propTypes = {
@@ -27,7 +28,7 @@ class Tree extends React.Component {
   }
 
   getContent = () => (
-    <pre>{this.props.repo.blob.content}</pre>
+    <Blob blob={this.props.repo.blob} />
   )
 
   render() {

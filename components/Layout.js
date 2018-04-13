@@ -68,7 +68,7 @@ export default class extends React.PureComponent {
           {this.props.breadcrumb}
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             {sider}
-            <Content style={{ padding: '0 24px', minHeight: 280 }}>
+            <Content style={{ padding: '0 24px', overflow: 'inherit', minHeight: 280 }}>
               {this.props.children}
             </Content>
           </Layout>
