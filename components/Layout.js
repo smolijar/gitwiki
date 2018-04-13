@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu } from 'antd';
 import NProgress from 'nprogress';
 import Router from 'next/router';
 import WidgetContainer from '../containers/user/WidgetContainer';
 
 const {
-  Header, Content, Footer, Sider
+  Header, Content, Footer, Sider,
 } = Layout;
 
 
@@ -27,9 +27,11 @@ export default class extends React.PureComponent {
   }
   static defaultProps = {
     children: [],
+    breadcrumb: null,
+    sider: null,
   }
   render() {
-    const sider = this.props.sider && <Sider width={200} style={{ background: '#fff' }}>{this.props.sider}</Sider>
+    const sider = this.props.sider && <Sider width={200} style={{ background: '#fff' }}>{this.props.sider}</Sider>;
     return (
       <Layout className="main-frame">
         <Head>
@@ -40,7 +42,7 @@ export default class extends React.PureComponent {
         <Header className="header">
           <div className="logo">
             <Link href="/">
-              <img src="/static/logo.png" />
+              <img src="/static/logo.png" alt="logo" />
             </Link>
           </div>
           <Menu
