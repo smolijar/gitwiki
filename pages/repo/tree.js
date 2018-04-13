@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, List, Avatar } from 'antd';
 import { connect } from 'react-redux';
 import icons from 'file-icons-js';
 import { compile } from 'path-to-regexp';
@@ -36,26 +36,46 @@ class Tree extends React.Component {
     store.dispatch(actions.repo.setTree(response));
   }
 
-  getSider = () => (
-      <Menu
-        mode="inline"
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
-        style={{ height: '100%' }}
-      >
-        {
-          this.props.repo.tree.map((item) => {
-            const entryRepo = { ...this.props.repo.meta, path: item.path };
-            return (
-              <Menu.Item key={item.name}>
+  getIndex = () => (
+    <List
+      itemLayout="horizontal"
+      dataSource={this.props.repo.tree}
+      renderItem={item => {
+        const entryRepo = { ...this.props.repo.meta, path: item.path };
+        return (
+          <List.Item>
+            <List.Item.Meta
+              title={
                 <Link href={{ pathname: '/repo/tree', query: entryRepo }} as={compile(front.tree)(entryRepo)}>
-                  <a><span className={`${getIconClass(item)} node`}> {item.name}</span></a>
+                  <a><span className={`${getIconClass(item)} node`} /> {item.name}</a>
                 </Link>
-              </Menu.Item>
-            );
-          })
-        }
-      </Menu>
+              }
+            />
+            <div>{item.sha}</div>
+          </List.Item>
+        )
+      }}
+    />
+  );
+
+  getSiderIndex = () => (
+    <Menu
+      mode="inline"
+      defaultSelectedKeys={[this.props.repo.meta.path]}
+    >
+      {
+        this.props.repo.tree.map((item) => {
+          const entryRepo = { ...this.props.repo.meta, path: item.path };
+          return (
+            <Menu.Item key={item.path}>
+              <Link href={{ pathname: '/repo/tree', query: entryRepo }} as={compile(front.tree)(entryRepo)}>
+                <a><span className={`${getIconClass(item)} node`}> {item.name}</span></a>
+              </Link>
+            </Menu.Item>
+          );
+        })
+      }
+    </Menu>
   );
 
   getContent = () => (
@@ -64,22 +84,22 @@ class Tree extends React.Component {
 
   render() {
     let left = null;
-    let main = this.getSider();
-    if(this.props.repo.blob) {
-      left = main;
-      main = this.getContent()
+    let main = this.getIndex();
+    if (this.props.repo.blob) {
+      left = this.getSiderIndex();
+      main = this.getContent();
     }
     return (
       <AppLayout breadcrumb={<Breadcrumb repo={this.props.repo.meta} />} sider={left}>
-        { main }
+        {main}
         <style jsx global>{`
         span.node {
           color: rgba(0, 0, 0, 0.65);
         }
         span.node.file:before, span.node.directory:before {
-          color: red;
           font-family: "anticon" !important;
           color: rgba(0, 0, 0, 0.65);
+          font-size: 15px;
         }
         span.node.file::before {
           content: "\\E664";
