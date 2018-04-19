@@ -1,30 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Link from 'next/link';
-import { List } from 'antd';
-import { compile } from 'path-to-regexp';
-import { front } from '../../../common/endpoints';
+import { modes } from 'emily-editor';
 import Highlight from 'react-highlight.js';
-
 import { Tabs } from 'antd';
-const TabPane = Tabs.TabPane;
+import Preview from './Preview';
+
+
+const { TabPane } = Tabs;
+
+
+const getMode = (name) => {
+  if (name.match(/\.(md|markdown)$/)) {
+    return modes.markdown;
+  }
+  if (name.match(/\.(adoc|asc|asciidoc)$/)) {
+    return modes.asciidoc;
+  }
+  return false;
+};
 
 export default class Blob extends React.PureComponent {
   static propTypes = {
     blob: PropTypes.shape({
       content: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     }).isRequired,
   }
 
   render() {
+    const mode = getMode(this.props.blob.name);
     return (
       <div className="card-container">
         <Tabs type="card">
-          <TabPane tab="Source code" key="1">
+          {
+            mode &&
+            <TabPane tab="Preview" key="1">
+              <Preview blob={this.props.blob} mode={mode} />
+            </TabPane>
+          }
+
+          <TabPane tab="Source code" key="2">
             <Highlight>{this.props.blob.content}</Highlight>
-          </TabPane>
-          <TabPane tab="Preview" key="2">
-            TODO PREVIEW
           </TabPane>
         </Tabs>
         <style jsx global>{`
