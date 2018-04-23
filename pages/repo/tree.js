@@ -32,10 +32,9 @@ class Tree extends React.Component {
   )
 
   render() {
-    let left = null;
+    let left = <IndexMenu repo={this.props.repo} />;
     let main = <IndexList repo={this.props.repo} />;
     if (this.props.repo.blob) {
-      left = <IndexMenu repo={this.props.repo} />;
       main = this.getContent();
     }
     return (
