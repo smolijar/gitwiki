@@ -10,6 +10,7 @@ const endpoints = {
   },
   front: {
     tree: '/repo/:provider/:name/tree/:ref/:path([\\S\\s]*)?',
+    edit: '/repo/:provider/:name/edit/:ref/:path([\\S\\s]*)?',
     index: '/repo',
   },
 };

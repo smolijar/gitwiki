@@ -10,6 +10,7 @@ export default {
   },
   revision: {
     SET_CHANGE: 'SET_CHANGE',
+    POST_REVISION: 'POST_REVISION',
   },
   user: {
     FETCH_USER: 'FETCH_USER',

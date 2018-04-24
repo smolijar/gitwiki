@@ -11,6 +11,7 @@ export default {
   },
   revision: {
     setChange: data => ({ type: types.revision.SET_CHANGE, data }),
+    postRevision: data => ({ type: types.revision.POST_REVISION, data }),
   },
   user: {
     fetchUser: data => ({ type: types.user.FETCH_USER, data }),

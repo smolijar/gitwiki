@@ -4,7 +4,7 @@ import fetchApi from '../../common/fetchApi';
 import types from '../actions/types';
 import actions from '../actions/actions';
 import { api } from '../../common/endpoints';
-
+import {values} from 'ramda';
 
 export function* fetchTree(action) {
   const data = yield fetchApi(compile(api.tree)(action.data));
@@ -38,6 +38,19 @@ export function* postGithubPersonalToken(action) {
   });
 }
 
+export function* postRevision(action) {
+  const changes = values(action.data.revision.changes);
+  yield fetchApi(compile(api.tree)(action.data.meta), {
+    options: {
+      method: 'PUT',
+      body: JSON.stringify({changes}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  });
+}
+
 export default function* () {
   yield all([
     takeLatest(types.repo.FETCH_TREE, fetchTree),
@@ -45,5 +58,6 @@ export default function* () {
     takeLatest(types.user.FETCH_USER, fetchUser),
     takeLatest(types.repo.FETCH_INDEX, fetchIndex),
     takeLatest(types.user.POST_GITHUB_PERSONAL_TOKEN, postGithubPersonalToken),
+    takeLatest(types.revision.POST_REVISION, postRevision),
   ]);
 }

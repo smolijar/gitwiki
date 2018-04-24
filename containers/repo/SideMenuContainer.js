@@ -5,5 +5,5 @@ import SideMenu from '../../components/repo/SideMenu';
 
 export default connect(
   state => ({ repo: state.repo }),
-  { setChange: actions.revision.setChange },
+  { setChange: actions.revision.setChange, postRevision: actions.revision.postRevision },
 )(SideMenu);
