@@ -26,7 +26,7 @@ async function writeTree(repo, changes) {
   const index = await repo.refreshIndex();
   const process = change => (
     change.remove ? index.removeByPath : index.addByPath
-  ).bind(index)(change.path);
+  ).bind(index)(change.path.replace(/^\.\//, ''));
   await Promise.all(changes.map(process));
   await index.write();
   return index.writeTree();
