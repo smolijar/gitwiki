@@ -35,11 +35,10 @@ router.get(api.tree, authMdw, (req, res) => {
 });
 
 router.put(api.tree, authMdw, (req, res) => {
-  const { changes } = req.body;
+  const { changes, message } = req.body;
   providers.getProvider(req.params.provider)
     .getRepository(req.user, req.params.name)
-    .then(repo => git.commitAndPush(repo, req.user, changes, 'ABC'))
-    .catch(e => logger.error(e))
+    .then(repo => git.commitAndPush(repo, req.user, changes, message))
 });
 
 router.get(api.refs, authMdw, (req, res) => {

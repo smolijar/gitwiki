@@ -8,6 +8,7 @@ const initialState = {
   index: [],
   revision: {
     changes: {},
+    message: "Default message"
   }
 };
 
