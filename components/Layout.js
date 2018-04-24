@@ -113,6 +113,21 @@ export default class extends React.PureComponent {
           body > div:first-child, body > div:first-child > div {
             height: 100%;
           }
+          
+          span.node {
+            color: rgba(0, 0, 0, 0.65);
+          }
+          span.node.file:before, span.node.directory:before {
+            font-family: "anticon" !important;
+            color: rgba(0, 0, 0, 0.65);
+            font-size: 15px;
+          }
+          span.node.file::before {
+            content: "\\E664";
+          }
+          span.node.directory::before {
+            content: "\\E662";
+          }
         `}
         </style>
       </Layout>

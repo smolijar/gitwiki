@@ -6,6 +6,9 @@ const initialState = {
   blob: null,
   refs: [],
   index: [],
+  revision: {
+    changes: {},
+  }
 };
 
 export default (state = initialState, action) => {
@@ -18,6 +21,10 @@ export default (state = initialState, action) => {
       return { ...state, refs: action.data };
     case types.repo.SET_INDEX:
       return { ...state, index: action.data };
+    case types.revision.SET_CHANGE:
+      const revision = state.revision;
+      revision.changes[action.data.path] = action.data;
+      return { ...state, revision };
     default:
       return state;
   }

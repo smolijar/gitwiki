@@ -9,7 +9,7 @@ import withRedux from '../../redux/withRedux';
 import actions from '../../redux/actions/actions';
 import { api } from '../../common/endpoints';
 import IndexList from '../../components/repo/index/List';
-import IndexMenu from '../../components/repo/index/Menu';
+import SideMenuContainer from '../../containers/repo/SideMenuContainer';
 import Blob from '../../components/repo/blob';
 
 class Tree extends React.Component {
@@ -32,7 +32,7 @@ class Tree extends React.Component {
   )
 
   render() {
-    let left = <IndexMenu repo={this.props.repo} />;
+    let left = <SideMenuContainer />;
     let main = <IndexList repo={this.props.repo} />;
     if (this.props.repo.blob) {
       main = this.getContent();
@@ -40,23 +40,6 @@ class Tree extends React.Component {
     return (
       <Layout breadcrumb={<Breadcrumb repo={this.props.repo.meta} />} sider={left}>
         {main}
-        <style jsx global>{`
-        span.node {
-          color: rgba(0, 0, 0, 0.65);
-        }
-        span.node.file:before, span.node.directory:before {
-          font-family: "anticon" !important;
-          color: rgba(0, 0, 0, 0.65);
-          font-size: 15px;
-        }
-        span.node.file::before {
-          content: "\\E664";
-        }
-        span.node.directory::before {
-          content: "\\E662";
-        }
-        `}
-        </style>
       </Layout>
     );
   }

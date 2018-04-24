@@ -3,17 +3,18 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Icon } from 'antd';
 import { compile } from 'path-to-regexp';
-import getIconClass from './icon';
-import { front } from '../../../common/endpoints';
+import getIconClass from './index/icon';
+import { front } from '../../common/endpoints';
 
 const { SubMenu } = Menu;
 
-export default class IndexMenu extends React.PureComponent {
+export default class SideMenu extends React.PureComponent {
   static propTypes = {
     repo: PropTypes.shape({
       meta: PropTypes.objectOf(PropTypes.string).isRequired,
       tree: PropTypes.arrayOf(PropTypes.object).isRequired,
     }).isRequired,
+    setChange: PropTypes.func.isRequired,
   }
 
   render() {
@@ -32,7 +33,7 @@ export default class IndexMenu extends React.PureComponent {
           title={<span><Icon type="edit" /><span>Modify</span></span>}
         >
           <Menu.Item key="action-create">
-            <a>Create file</a>
+            <a onClick={() => this.props.setChange({path: 'foo'})}>Create file</a>
           </Menu.Item>
           <Menu.Item key="action-edit">
             <a>Edit file</a>
