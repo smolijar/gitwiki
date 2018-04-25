@@ -1,10 +1,10 @@
 import { takeLatest, put, all } from 'redux-saga/effects';
 import { compile } from 'path-to-regexp';
+import { values } from 'ramda';
 import fetchApi from '../../common/fetchApi';
 import types from '../actions/types';
 import actions from '../actions/actions';
 import { api } from '../../common/endpoints';
-import { values } from 'ramda';
 
 export function* fetchTree(action) {
   const data = yield fetchApi(compile(api.tree)(action.data));

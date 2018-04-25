@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu, Icon, Badge, Modal, Input } from 'antd';
-const { TextArea } = Input;
-
+import { Icon, Badge, Modal, Input } from 'antd';
 import { values } from 'ramda';
+
+const { TextArea } = Input;
 
 
 export default class CommitModal extends React.Component {
@@ -11,33 +11,25 @@ export default class CommitModal extends React.Component {
     postRevision: PropTypes.func.isRequired,
     setMessage: PropTypes.func.isRequired,
     revision: PropTypes.object.isRequired,
+    repo: PropTypes.object.isRequired,
   }
 
   constructor() {
     super();
     this.messageArea = React.createRef();
     this.state = {
-      show: false
-    }
-  }
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  }
-  handleOk = (e) => {
-    this.props.setMessage(this.getMessage());
-    this.props.postRevision(this.props.repo);
-    this.setState({
-      visible: false,
-    });
+      // eslint-disable-next-line react/no-unused-state
+      show: false,
+    };
   }
   getMessage = () => this.messageArea.current.textAreaRef.value;
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-    });
+  showModal = () => this.setState({ visible: true });
+  handleOk = () => {
+    this.props.setMessage(this.getMessage());
+    this.props.postRevision(this.props.repo);
+    this.setState({ visible: false });
   }
+  handleCancel = () => this.setState({ visible: false });
 
   render() {
     const changes = values(this.props.repo.revision.changes).length;

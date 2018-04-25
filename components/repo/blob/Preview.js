@@ -24,7 +24,11 @@ export default class Preview extends React.PureComponent {
     if (preview) {
       return (
         <div>
-          <div className={preview.className} dangerouslySetInnerHTML={{ __html: preview.html }} />
+          <div
+            className={preview.className}
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{ __html: preview.html }}
+          />
           {preview.jsx()}
         </div>
       );

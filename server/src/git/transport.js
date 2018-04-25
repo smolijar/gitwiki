@@ -32,7 +32,6 @@ const getRepo = (uri, dest, getCred) => {
 
 async function pushOrigin(repo) {
   const remoteRef = await repo.getRemote('origin');
-  console.log(repo.callbacks);
   await remoteRef.push(['refs/heads/master:refs/heads/master'], {
     callbacks: repo.callbacks,
   });

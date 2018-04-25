@@ -1,26 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import { Menu, Icon, Badge, Modal } from 'antd';
+import { Menu, Icon } from 'antd';
 import { compile } from 'path-to-regexp';
 import getIconClass from './index/icon';
 import { front } from '../../common/endpoints';
 import redirect from '../../common/redirect';
-import ModalContainer from '../../containers/repo/revision/ModalContainer'
+import ModalContainer from '../../containers/repo/revision/ModalContainer';
 
 const { SubMenu } = Menu;
 
-export default class SideMenu extends React.Component {
+export default class SideMenu extends React.PureComponent {
   static propTypes = {
     repo: PropTypes.shape({
       meta: PropTypes.objectOf(PropTypes.string).isRequired,
       tree: PropTypes.arrayOf(PropTypes.object).isRequired,
+      blob: PropTypes.object.isRequired,
     }).isRequired,
     setChange: PropTypes.func.isRequired,
   }
 
   render() {
-    const blob = this.props.repo.blob;
+    const { blob } = this.props.repo;
     return (
       <div>
         <Menu
@@ -34,13 +35,13 @@ export default class SideMenu extends React.Component {
           <Menu.Item key="__edit">
             <a onClick={() => redirect('/repo/edit', this.props.repo.meta, compile(front.edit)(this.props.repo.meta))}>
               <Icon type="edit" />{blob ? 'Edit' : 'Create'} file
-          </a>
+            </a>
           </Menu.Item>
           {blob &&
             <Menu.Item key="__delete">
               <a onClick={() => this.props.setChange({ path: blob.path, remove: true })}>
                 <Icon type="close" />Delete file
-            </a>
+              </a>
             </Menu.Item>
           }
           <SubMenu

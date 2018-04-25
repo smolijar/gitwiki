@@ -8,12 +8,12 @@ const initialState = {
   index: [],
   revision: {
     changes: {},
-    message: "Default message"
-  }
+    message: 'Default message',
+  },
 };
 
 export default (state = initialState, action) => {
-  const revision = state.revision;
+  const { revision } = state;
   switch (action.type) {
     case types.repo.SET_REPO:
       return { ...state, meta: action.data };

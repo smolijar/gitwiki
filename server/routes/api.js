@@ -34,7 +34,7 @@ router.get(api.tree, authMdw, (req, res) => {
     .catch(e => logger.error(e));
 });
 
-router.put(api.tree, authMdw, (req, res) => {
+router.put(api.tree, authMdw, (req) => {
   const { changes, message } = req.body;
   providers.getProvider(req.params.provider)
     .getRepository(req.user, req.params.name)
