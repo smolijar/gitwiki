@@ -7,16 +7,13 @@ import getIconClass from './index/icon';
 import { front } from '../../common/endpoints';
 import redirect from '../../common/redirect';
 import ModalContainer from '../../containers/repo/revision/ModalContainer';
+import { repoType } from '../../client/propTypes';
 
 const { SubMenu } = Menu;
 
 export default class SideMenu extends React.PureComponent {
   static propTypes = {
-    repo: PropTypes.shape({
-      meta: PropTypes.objectOf(PropTypes.string).isRequired,
-      tree: PropTypes.arrayOf(PropTypes.object).isRequired,
-      blob: PropTypes.object.isRequired,
-    }).isRequired,
+    repo: repoType.isRequired,
     setChange: PropTypes.func.isRequired,
   }
 

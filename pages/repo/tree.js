@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compile } from 'path-to-regexp';
 import Breadcrumb from '../../components/Breadcrumb';
@@ -11,14 +10,12 @@ import { api } from '../../common/endpoints';
 import IndexList from '../../components/repo/index/List';
 import SideMenuContainer from '../../containers/repo/SideMenuContainer';
 import Blob from '../../components/repo/blob';
+import { repoType } from '../../client/propTypes';
+
 
 class Tree extends React.Component {
   static propTypes = {
-    repo: PropTypes.shape({
-      meta: PropTypes.objectOf(PropTypes.string).isRequired,
-      tree: PropTypes.arrayOf(PropTypes.object).isRequired,
-      blob: PropTypes.object,
-    }).isRequired,
+    repo: repoType.isRequired,
   }
 
   static async getInitialProps({ req, query, store }) {

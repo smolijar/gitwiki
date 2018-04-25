@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { accessTokenType } from '../../../client/propTypes';
 
 
 class Callback extends React.Component {
@@ -7,7 +7,7 @@ class Callback extends React.Component {
     return { accessToken: query.accessToken };
   }
   static propTypes = {
-    accessToken: PropTypes.string.isRequired,
+    accessToken: accessTokenType.isRequired,
   }
   componentDidMount() {
     window.opener.processToken(this.props.accessToken);

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Badge, Modal, Input } from 'antd';
 import { values } from 'ramda';
+import { repoType, revisionType } from '../../../client/propTypes';
 
 const { TextArea } = Input;
 
@@ -10,8 +11,8 @@ export default class CommitModal extends React.Component {
   static propTypes = {
     postRevision: PropTypes.func.isRequired,
     setMessage: PropTypes.func.isRequired,
-    revision: PropTypes.object.isRequired,
-    repo: PropTypes.object.isRequired,
+    revision: revisionType.isRequired,
+    repo: repoType.isRequired,
   }
 
   constructor() {

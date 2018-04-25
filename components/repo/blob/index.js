@@ -1,10 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { modes } from 'emily-editor';
 import Highlight from 'react-highlight.js';
 import { Tabs } from 'antd';
 import Preview from './Preview';
-
+import { blobType } from '../../../client/propTypes';
 
 const { TabPane } = Tabs;
 
@@ -21,10 +20,7 @@ const getMode = (name) => {
 
 export default class Blob extends React.PureComponent {
   static propTypes = {
-    blob: PropTypes.shape({
-      content: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }).isRequired,
+    blob: blobType.isRequired,
   }
 
   render() {

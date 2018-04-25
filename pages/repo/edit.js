@@ -13,14 +13,12 @@ import actions from '../../redux/actions/actions';
 import { api } from '../../common/endpoints';
 import SideMenuContainer from '../../containers/repo/SideMenuContainer';
 import Blob from '../../components/repo/blob';
+import { repoType } from '../../client/propTypes';
+
 
 class Edit extends React.Component {
   static propTypes = {
-    repo: PropTypes.shape({
-      meta: PropTypes.objectOf(PropTypes.string).isRequired,
-      tree: PropTypes.arrayOf(PropTypes.object).isRequired,
-      blob: PropTypes.object,
-    }).isRequired,
+    repo: repoType.isRequired,
     setChange: PropTypes.func.isRequired,
   }
 

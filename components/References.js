@@ -4,11 +4,12 @@ import Link from 'next/link';
 import { Menu, Dropdown } from 'antd';
 import { compile } from 'path-to-regexp';
 import { front } from '../common/endpoints';
+import { repoType, refsType } from '../client/propTypes';
 
 export default class References extends React.PureComponent {
   static propTypes = {
-    refs: PropTypes.arrayOf(PropTypes.object).isRequired,
-    repo: PropTypes.objectOf(PropTypes.string).isRequired,
+    refs: refsType.isRequired,
+    repo: repoType.isRequired,
     fetchRefs: PropTypes.func.isRequired,
   }
 

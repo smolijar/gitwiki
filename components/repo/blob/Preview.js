@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { blobType, modeType } from '../../../client/propTypes';
 
 const getPreview = ({ content }, mode) => ({
   html: mode.convert(content).html,
@@ -10,14 +10,8 @@ const getPreview = ({ content }, mode) => ({
 
 export default class Preview extends React.PureComponent {
   static propTypes = {
-    blob: PropTypes.shape({
-      content: PropTypes.string.isRequired,
-    }).isRequired,
-    mode: PropTypes.shape({
-      convert: PropTypes.func,
-      renderJsxStyle: PropTypes.func,
-      previewClassName: PropTypes.string,
-    }).isRequired,
+    blob: blobType.isRequired,
+    mode: modeType.isRequired,
   }
   render() {
     const preview = getPreview(this.props.blob, this.props.mode);

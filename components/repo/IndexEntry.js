@@ -1,24 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Card, Avatar } from 'antd';
 import { unless, equals, always } from 'ramda';
 import { compile } from 'path-to-regexp';
 import { front } from '../../common/endpoints';
-
-const entryType = PropTypes.shape({
-  name: PropTypes.string,
-  description: PropTypes.string,
-  provider: PropTypes.string,
-});
-
-export { entryType };
+import { repoIndexEntryType } from '../../client/propTypes';
 
 const icon = unless(equals('github'), always('fork'));
 
 export default class IndexEntry extends React.PureComponent {
   static propTypes = {
-    entry: entryType.isRequired,
+    entry: repoIndexEntryType.isRequired,
   }
 
   render() {

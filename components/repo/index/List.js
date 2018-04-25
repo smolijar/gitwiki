@@ -1,17 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { List } from 'antd';
 import { compile } from 'path-to-regexp';
 import getIconClass from './icon';
 import { front } from '../../../common/endpoints';
+import { repoType } from '../../../client/propTypes';
 
 export default class IndexList extends React.PureComponent {
   static propTypes = {
-    repo: PropTypes.shape({
-      meta: PropTypes.objectOf(PropTypes.string).isRequired,
-      tree: PropTypes.arrayOf(PropTypes.object).isRequired,
-    }).isRequired,
+    repo: repoType.isRequired,
   }
 
   render() {
