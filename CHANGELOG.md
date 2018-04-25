@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.6.0] - 2018-04-25
+### Added
+- Logo
+- Commiting to FE an API
+- SHA for entries
+- Emily
+- Document preview and source code preview
+
+### Changed
+- Styled navbar
+- Update to React 16.3
+- Refactor propTypes
+- Refactor fetchApi for various methods
+
 ## [0.5.0] - 2018-04-10
 ### Added
 - Github repository listing
@@ -81,7 +95,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Readme
 - VERSION
 
-[Unreleased]: https://github.com/grissius/gitwiki/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/grissius/gitwiki/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/grissius/gitwiki/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/grissius/gitwiki/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/grissius/gitwiki/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/grissius/gitwiki/compare/v0.2.0...v0.3.0
