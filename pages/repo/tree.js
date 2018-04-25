@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compile } from 'path-to-regexp';
 import Breadcrumb from '../../components/Breadcrumb';
 import Layout from '../../components/Layout';
-import fetchApi from '../../common/fetchApi';
+import { getApi } from '../../common/fetchApi';
 import withRedux from '../../redux/withRedux';
 import actions from '../../redux/actions/actions';
 import { api } from '../../common/endpoints';
@@ -20,7 +20,7 @@ class Tree extends React.Component {
 
   static async getInitialProps({ req, query, store }) {
     store.dispatch(actions.repo.setRepo(query));
-    const response = await fetchApi(compile(api.tree)(query), { req });
+    const response = await getApi(compile(api.tree)(query), { req });
     store.dispatch(actions.repo.setTree(response));
   }
 
