@@ -12,6 +12,8 @@ const initialState = {
   },
 };
 
+
+/* eslint-disable complexity */
 export default (state = initialState, action) => {
   const { revision } = state;
   switch (action.type) {
@@ -33,3 +35,5 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+/* eslint-enable */
+
