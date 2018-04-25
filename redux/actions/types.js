@@ -10,6 +10,7 @@ export default {
   },
   revision: {
     SET_CHANGE: 'SET_CHANGE',
+    SET_MESSAGE: 'SET_MESSAGE',
     POST_REVISION: 'POST_REVISION',
   },
   user: {

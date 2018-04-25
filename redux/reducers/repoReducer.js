@@ -13,6 +13,7 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+  const revision = state.revision;
   switch (action.type) {
     case types.repo.SET_REPO:
       return { ...state, meta: action.data };
@@ -22,8 +23,10 @@ export default (state = initialState, action) => {
       return { ...state, refs: action.data };
     case types.repo.SET_INDEX:
       return { ...state, index: action.data };
+    case types.revision.SET_MESSAGE:
+      revision.message = action.data;
+      return { ...state, revision };
     case types.revision.SET_CHANGE:
-      const revision = state.revision;
       revision.changes[action.data.path] = action.data;
       return { ...state, revision };
     default:

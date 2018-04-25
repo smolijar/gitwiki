@@ -5,5 +5,8 @@ import Modal from '../../../components/repo/revision/Modal';
 
 export default connect(
   state => ({ repo: state.repo }),
-  { postRevision: actions.revision.postRevision },
+  {
+    postRevision: actions.revision.postRevision,
+    setMessage: actions.revision.setMessage,
+  },
 )(Modal);
