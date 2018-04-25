@@ -7,12 +7,13 @@ const getRepo = (uri, dest, getCred) => {
       credentials: getCred,
     },
   };
+  const setCallbacks = (repo) => {
+    const repository = repo;
+    repository.callbacks = cloneOpts.fetchOpts.callbacks;
+    return repo;
+  };
   return NodeGit.Clone(uri, dest, cloneOpts)
-    .then((repo) => {
-      const repository = repo;
-      repository.callbacks = cloneOpts.fetchOpts.callbacks;
-      return repo;
-    })
+    .then(setCallbacks)
     .catch((e) => {
       let repository;
       // exists and is not an empty directory
@@ -22,7 +23,8 @@ const getRepo = (uri, dest, getCred) => {
           .then((repo) => { repository = repo; return repo; })
           .then(repo => repo.fetchAll(cloneOpts.fetchOpts))
           .then(() => repository.mergeBranches('master', 'origin/master'))
-          .then(() => repository);
+          .then(() => repository)
+          .then(setCallbacks);
       }
       throw e;
     });

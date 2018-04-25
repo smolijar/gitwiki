@@ -8,6 +8,11 @@ export default {
     SET_INDEX: 'SET_INDEX',
     FETCH_INDEX: 'FETCH_INDEX',
   },
+  revision: {
+    SET_CHANGE: 'SET_CHANGE',
+    SET_MESSAGE: 'SET_MESSAGE',
+    POST_REVISION: 'POST_REVISION',
+  },
   user: {
     FETCH_USER: 'FETCH_USER',
     SET_USER: 'SET_USER',

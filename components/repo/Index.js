@@ -1,16 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 import { splitEvery } from 'ramda';
-import IndexEntry, { entryType } from './IndexEntry';
+import IndexEntry from './IndexEntry';
 import PersonalTokenContainer from '../../containers/user/PersonalTokenContainer';
+import { repoIndexType } from '../../client/propTypes';
 
-const indexType = PropTypes.arrayOf(entryType);
-export { indexType };
 
 export default class Index extends React.PureComponent {
   static propTypes = {
-    index: indexType.isRequired,
+    index: repoIndexType.isRequired,
   }
 
   render() {

@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Layout, Breadcrumb } from 'antd';
 import { zip } from 'ramda';
 import { compile } from 'path-to-regexp';
 import { front } from '../common/endpoints';
 import ReferencesContainer from '../containers/ReferencesContainer';
+import { repoType } from '../client/propTypes';
 
 
 const getCrumbs = (repo) => {
@@ -25,7 +25,7 @@ const getCrumbs = (repo) => {
 
 export default class extends React.PureComponent {
   static propTypes = {
-    repo: PropTypes.objectOf(PropTypes.string).isRequired,
+    repo: repoType.isRequired,
   }
   render() {
     const { repo } = this.props;

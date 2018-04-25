@@ -9,6 +9,11 @@ export default {
     fetchIndex: data => ({ type: types.repo.FETCH_INDEX, data }),
     setIndex: data => ({ type: types.repo.SET_INDEX, data }),
   },
+  revision: {
+    setChange: data => ({ type: types.revision.SET_CHANGE, data }),
+    setMessage: data => ({ type: types.revision.SET_MESSAGE, data }),
+    postRevision: data => ({ type: types.revision.POST_REVISION, data }),
+  },
   user: {
     fetchUser: data => ({ type: types.user.FETCH_USER, data }),
     setUser: data => ({ type: types.user.SET_USER, data }),

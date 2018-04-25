@@ -2,7 +2,7 @@ import fetch from 'isomorphic-unfetch';
 import { assocPath, concat, __, compose, merge } from 'ramda';
 import { isLoggedIn, getAccessToken } from '../client/auth';
 
-export default async function fetchApi(link, params = {}) {
+async function fetchApi(link, params = {}) {
   const req = params.req || false;
   let uri = link;
   let options = merge({ method: 'GET' }, params.options || {});
@@ -25,3 +25,26 @@ export default async function fetchApi(link, params = {}) {
     .then(res => res.text())
     .then(res => JSON.parse(res));
 }
+
+const getApi = fetchApi;
+const postApi = (link, body, params) => fetchApi(link, merge(params, {
+  options: {
+    method: 'POST',
+    body,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  },
+}));
+const putApi = (link, body, params) => fetchApi(link, merge(params, {
+  options: {
+    method: 'PUT',
+    body,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  },
+}));
+
+export { getApi, putApi, postApi };
+

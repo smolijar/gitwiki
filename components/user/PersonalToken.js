@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Input } from 'antd';
 import { isLoggedIn } from '../../client/auth';
-import userProp from './userProp';
+import { userType } from '../../client/propTypes';
+
 
 export default class PersonalToken extends React.PureComponent {
   static propTypes = {
     fetchUser: PropTypes.func.isRequired,
     postToken: PropTypes.func.isRequired,
-    user: userProp.isRequired,
+    user: userType.isRequired,
   }
 
   componentDidMount() {
