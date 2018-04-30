@@ -1,5 +1,8 @@
 const NodeGit = require('nodegit');
 const {
+  branchesAndUpstreams, createLocalRefs, getRefCompoundName,
+} = require('./refs');
+const {
   compose,
   curry,
   assocPath,
@@ -8,7 +11,10 @@ const {
 
 async function updateRemoteRefs(repo) {
   await repo.fetchAll(repo.fetchOpts);
-  await repo.mergeBranches('master', 'origin/master');
+  await createLocalRefs(repo);
+  const ups = await branchesAndUpstreams(repo);
+  await Promise.all(ups.map(branchAndUpstream =>
+    repo.mergeBranches(...branchAndUpstream.map(getRefCompoundName))));
   return repo;
 }
 
@@ -31,6 +37,7 @@ const getRepo = (uri, dest, getCred) => {
   const setup = setupRepo(cloneOpts);
   return NodeGit.Clone(uri, dest, cloneOpts)
     .then(setup)
+    .then(createLocalRefs)
     .catch((e) => {
       if (e.errno === NodeGit.Error.CODE.EEXISTS) {
         return retrieveCachedRepo(dest, setup);
