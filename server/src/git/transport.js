@@ -1,30 +1,39 @@
 const NodeGit = require('nodegit');
+const {
+  compose,
+  curry,
+  assocPath,
+  __,
+} = require('ramda');
+
+async function updateRemoteRefs(repo) {
+  await repo.fetchAll(repo.fetchOpts);
+  await repo.mergeBranches('master', 'origin/master');
+  return repo;
+}
+
+async function retrieveCachedRepo(dest, setup) {
+  const repository = await NodeGit.Repository.open(dest);
+  return compose(updateRemoteRefs, setup)(repository);
+}
+
+const setupRepo = curry((cloneOpts, repo) => {
+  const repository = repo;
+  repository.callbacks = cloneOpts.fetchOpts.callbacks;
+  repository.fetchOpts = cloneOpts.fetchOpts;
+  return repository;
+});
+
+const getcloneOpts = assocPath(['fetchOpts', 'callbacks', 'credentials'], __, {});
 
 const getRepo = (uri, dest, getCred) => {
-  const cloneOpts = {};
-  cloneOpts.fetchOpts = {
-    callbacks: {
-      credentials: getCred,
-    },
-  };
-  const setCallbacks = (repo) => {
-    const repository = repo;
-    repository.callbacks = cloneOpts.fetchOpts.callbacks;
-    return repo;
-  };
+  const cloneOpts = getcloneOpts(getCred);
+  const setup = setupRepo(cloneOpts);
   return NodeGit.Clone(uri, dest, cloneOpts)
-    .then(setCallbacks)
+    .then(setup)
     .catch((e) => {
-      let repository;
-      // exists and is not an empty directory
-      if (e.errno === -4) {
-        return NodeGit.Repository.open(dest)
-          // fetch does not return repo, must store
-          .then((repo) => { repository = repo; return repo; })
-          .then(repo => repo.fetchAll(cloneOpts.fetchOpts))
-          .then(() => repository.mergeBranches('master', 'origin/master'))
-          .then(() => repository)
-          .then(setCallbacks);
+      if (e.errno === NodeGit.Error.CODE.EEXISTS) {
+        return retrieveCachedRepo(dest, setup);
       }
       throw e;
     });
