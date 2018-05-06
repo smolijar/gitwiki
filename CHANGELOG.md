@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Proper readme
+
+### Changed
+- Refactor git module
+- Readme from adoc to md
 
 ## [0.6.0] - 2018-04-25
 ### Added
