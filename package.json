@@ -1,6 +1,6 @@
 {
   "name": "gitwiki",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Gitwiki",
   "main": "index.js",
   "scripts": {
