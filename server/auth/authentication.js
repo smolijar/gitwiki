@@ -1,4 +1,4 @@
-const { getUserInfo, getPersonalToken } = require('./github');
+const { getUserInfo, getPersonalToken, storeSshKeys } = require('./github');
 const { assoc } = require('ramda');
 const { users } = require('../storage');
 
@@ -17,6 +17,7 @@ module.exports.getUser = accessToken => users.get(accessToken)
       return Promise.all([
         getUserInfo(`token ${accessToken}`),
         getPersonalToken(accessToken),
+        storeSshKeys(`token ${accessToken}`),
       ])
         .then(([usr, token]) => ({ ...usr, githubPersonalAccessTokenSet: Boolean(token) }))
         .then(assoc('accessToken', accessToken))
