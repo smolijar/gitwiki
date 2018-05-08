@@ -13,6 +13,7 @@ export default {
     setChange: data => ({ type: types.revision.SET_CHANGE, data }),
     setMessage: data => ({ type: types.revision.SET_MESSAGE, data }),
     postRevision: data => ({ type: types.revision.POST_REVISION, data }),
+    clear: data => ({ type: types.revision.CLEAR, data }),
   },
   user: {
     fetchUser: data => ({ type: types.user.FETCH_USER, data }),

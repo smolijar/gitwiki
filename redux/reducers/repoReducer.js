@@ -31,6 +31,8 @@ export default (state = initialState, action) => {
     case types.revision.SET_CHANGE:
       revision.changes[action.data.path] = action.data;
       return { ...state, revision };
+    case types.revision.CLEAR:
+      return { ...state, revision: initialState.revision };
     default:
       return state;
   }

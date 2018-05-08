@@ -2,9 +2,10 @@ import { takeLatest, put, all } from 'redux-saga/effects';
 import { compile } from 'path-to-regexp';
 import { values } from 'ramda';
 import { getApi, postApi, putApi } from '../../common/fetchApi';
+import redirect from '../../common/redirect';
 import types from '../actions/types';
 import actions from '../actions/actions';
-import { api } from '../../common/endpoints';
+import { api, front } from '../../common/endpoints';
 
 export function* fetchTree(action) {
   const data = yield getApi(compile(api.tree)(action.data));
@@ -34,6 +35,9 @@ export function* postRevision(action) {
   const changes = values(action.data.revision.changes);
   const { message } = action.data.revision;
   yield putApi(compile(api.tree)(action.data.meta), JSON.stringify({ changes, message }));
+  yield put(actions.revision.clear());
+  const query = { ...action.data.meta, path: '' };
+  redirect('/repo/tree', query, compile(front.tree)(query));
 }
 
 export default function* () {
