@@ -27,12 +27,11 @@ async function branchesAndUpstreams(repo) {
   const references = await repo.getReferences(NodeGit.Reference.TYPE.LISTALL);
   const branches = references.filter(r => r.isBranch());
   const upstreams = await Promise.all(branches.map(b =>
-    NodeGit.Branch.upstream(b)
-      .then(r => r.toString())));
+    NodeGit.Branch.upstream(b)));
   return zip(
-    branches.map(r => r.toString()),
+    branches,
     upstreams,
-  ).filter(pair => pair.up);
+  );
 }
 
 const getOrCreateBranch = (repo, name, oid) => repo.getBranch(name)
