@@ -12,6 +12,7 @@ export default {
     SET_CHANGE: 'SET_CHANGE',
     SET_MESSAGE: 'SET_MESSAGE',
     POST_REVISION: 'POST_REVISION',
+    CLEAR: 'CLEAR',
   },
   user: {
     FETCH_USER: 'FETCH_USER',

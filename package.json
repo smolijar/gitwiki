@@ -25,7 +25,7 @@
     "antd": "^3.2.1",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
-    "emily-editor": "^0.7.7",
+    "emily-editor": "^0.9.5",
     "express": "^4.16.2",
     "file-icons-js": "github:websemantics/file-icons-js",
     "fs-extra": "^5.0.0",

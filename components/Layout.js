@@ -35,9 +35,11 @@ export default class extends React.PureComponent {
     return (
       <Layout className="main-frame">
         <Head>
+          <script src="/static/emily/script.js" />
           <link rel="stylesheet" type="text/css" href="/static/antd/antd.css" />
           <link rel="stylesheet" type="text/css" href="/static/nprogress/nprogress.css" />
           <link rel="stylesheet" type="text/css" href="/static/file-icons-js/css/style.css" />
+          <link rel="stylesheet" type="text/css" href="/static/emily/style.css" />
           <link rel="stylesheet" href="https://highlightjs.org/static/demo/styles/github.css" />
         </Head>
         <Header className="header">
