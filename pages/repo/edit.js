@@ -5,6 +5,7 @@ import { dirname } from 'path';
 import { connect } from 'react-redux';
 import { compile } from 'path-to-regexp';
 import { Input, Button } from 'antd';
+import Emily, { generateMode } from 'emily-editor';
 import Breadcrumb from '../../components/Breadcrumb';
 import Layout from '../../components/Layout';
 import { getApi } from '../../common/fetchApi';
@@ -40,15 +41,21 @@ class Edit extends React.Component {
     const defaultContent = this.props.repo.blob ? this.props.repo.blob.content : '';
     return (
       <Layout breadcrumb={<Breadcrumb repo={this.props.repo.meta} />} sider={left}>
+        <h2>Name</h2>
         <Input defaultValue={defaultPath} addonBefore={this.getPrefix()} ref={(el) => { this.pathInput = el; }} placeholder="Enter file name" />
-        <textarea ref={(el) => { this.contentInput = el; }}>
-          {defaultContent}
-        </textarea>
+        <h2>Content</h2>
+        <div style={{ height: '750px', display: 'flex' }}>
+          <Emily
+            ref={(el) => { this.contentInput = el; }}
+            language={generateMode(defaultPath)}
+            content={defaultContent}
+          />
+        </div>
         <Button
           type="primary"
           onClick={() => {
           const path = this.getPrefix() + this.pathInput.input.value;
-          const content = this.contentInput.value;
+          const content = this.contentInput.getValue();
           this.props.setChange({ path, content });
           Router.back();
         }}
