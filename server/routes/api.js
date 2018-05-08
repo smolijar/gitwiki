@@ -5,6 +5,7 @@ const {
 const { api } = require('../../common/endpoints');
 const { getUser } = require('../auth/authentication');
 const controller = require('../controllers/api');
+const logger = require('../src/logger');
 
 const router = express.Router();
 
@@ -22,20 +23,22 @@ const authMdw = (req, res, next) => {
   }
 };
 
-router.get(api.tree, authMdw, controller.get[api.tree]);
+const wrapper = controllerAction => (req, res) => controllerAction(req, res);
 
-router.put(api.tree, authMdw, controller.put[api.tree]);
+router.get(api.tree, authMdw, wrapper(controller.get[api.tree]));
 
-router.get(api.refs, authMdw, controller.get[api.refs]);
+router.put(api.tree, authMdw, wrapper(controller.put[api.tree]));
 
-router.get(api.authGithub, controller.get[api.authGithub]);
+router.get(api.refs, authMdw, wrapper(controller.get[api.refs]));
 
-router.get(api.authGithubCb, controller.get[api.authGithubCb]);
+router.get(api.authGithub, wrapper(controller.get[api.authGithub]));
 
-router.get(api.user, authMdw, controller.get[api.user]);
+router.get(api.authGithubCb, wrapper(controller.get[api.authGithubCb]));
 
-router.post(api.authGithubPersonalToken, authMdw, controller.post[api.authGithubPersonalToken]);
+router.get(api.user, authMdw, wrapper(controller.get[api.user]));
 
-router.get(api.index, authMdw, controller.get[api.index]);
+router.post(api.authGithubPersonalToken, authMdw, wrapper(controller.post[api.authGithubPersonalToken]));
+
+router.get(api.index, authMdw, wrapper(controller.get[api.index]));
 
 module.exports = router;
