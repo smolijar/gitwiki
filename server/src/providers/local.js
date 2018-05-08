@@ -6,6 +6,8 @@ const git = require('../git');
 const types = require('./types');
 const { Cred } = require('nodegit');
 
+const { getConfig } = require('../../config');
+
 const username = propOr('@all', 'username');
 
 const entryFromName = compose(merge({ provider: 'local' }), objOf('name'));
@@ -24,7 +26,8 @@ const getCredentialCallback = () => (url, userName) => Cred.sshKeyFromAgent(user
 
 const getRepository = (user, repoPath) => {
   // TODO check gitolite authorization
-  const uri = `git@localhost:${repoPath}`;
+  const sshUser = getConfig('gitolite.user');
+  const uri = `${sshUser}@localhost:${repoPath}`;
   const dest = getLocalRepoWd(repoPath);
   return git.getRepo(uri, dest, getCredentialCallback());
 };

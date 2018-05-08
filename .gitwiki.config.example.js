@@ -10,6 +10,7 @@ module.exports = {
   gitolite: {
     bin: '/home/git/bin/gitolite',
     home: '/home/git',
+    user: 'git',
   },
   storage: 'sqlite:///home/git/database.sqlite',
 };
