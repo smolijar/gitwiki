@@ -2,13 +2,9 @@ const express = require('express');
 const {
   last, split, trim, compose,
 } = require('ramda');
-const logger = require('../src/logger');
-const git = require('../src/git');
 const { api } = require('../../common/endpoints');
-const { getRedirectUri, getAccessToken, savePersonalToken } = require('../auth/github');
-const providers = require('../src/providers');
 const { getUser } = require('../auth/authentication');
-const { users } = require('../storage');
+const controller = require('../controllers/api');
 
 const router = express.Router();
 
@@ -26,56 +22,20 @@ const authMdw = (req, res, next) => {
   }
 };
 
-router.get(api.tree, authMdw, (req, res) => {
-  providers.getProvider(req.params.provider)
-    .getRepository(req.user, req.params.name)
-    .then(repo => git.browse(repo, req.params.path, req.params.ref))
-    .then(data => res.json(data))
-    .catch(e => logger.error(e));
-});
+router.get(api.tree, authMdw, controller.get[api.tree]);
 
-router.put(api.tree, authMdw, (req) => {
-  const { changes, message } = req.body;
-  providers.getProvider(req.params.provider)
-    .getRepository(req.user, req.params.name)
-    .then(repo => git.commitAndPush(repo, req.user, changes, message))
-    .catch(e => logger.error(e));
-});
+router.put(api.tree, authMdw, controller.put[api.tree]);
 
-router.get(api.refs, authMdw, (req, res) => {
-  providers.getProvider(req.params.provider)
-    .getRepository(req.user, req.params.name)
-    .then(repo => git.refs(repo))
-    .then(data => res.json(data))
-    .catch(e => logger.error(e));
-});
+router.get(api.refs, authMdw, controller.get[api.refs]);
 
-router.get(api.authGithub, (req, res) => {
-  res.redirect(getRedirectUri());
-});
+router.get(api.authGithub, controller.get[api.authGithub]);
 
-router.get(api.authGithubCb, (req, res) => {
-  const { code } = req.query;
-  getAccessToken(code)
-    .then(accessToken => req.nextjs.render(req, res, '/auth/github/cb', { accessToken }));
-});
+router.get(api.authGithubCb, controller.get[api.authGithubCb]);
 
-router.get(api.user, authMdw, (req, res) => {
-  res.json(req.user);
-});
+router.get(api.user, authMdw, controller.get[api.user]);
 
-router.post(api.authGithubPersonalToken, authMdw, (req, res) => {
-  const { personalToken } = req.body;
-  if (personalToken) {
-    savePersonalToken(req.user, personalToken);
-    users.get(req.user.accessToken)
-      .then(u => res.json(u));
-  }
-});
+router.post(api.authGithubPersonalToken, authMdw, controller.post[api.authGithubPersonalToken]);
 
-router.get(api.index, authMdw, (req, res) => {
-  providers.listRepos(req.user)
-    .then(r => res.json(r));
-});
+router.get(api.index, authMdw, controller.get[api.index]);
 
 module.exports = router;
