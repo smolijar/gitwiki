@@ -34,7 +34,6 @@ export default class Blob extends React.PureComponent {
               <Preview blob={this.props.blob} mode={mode} />
             </TabPane>
           }
-
           <TabPane tab="Source code" key="2">
             <Highlight>{this.props.blob.content}</Highlight>
           </TabPane>
@@ -42,29 +41,33 @@ export default class Blob extends React.PureComponent {
         <style jsx global>{`
         .card-container {
           margin-top: -63px;
+          position: relative;
         }
         .card-container > .ant-tabs-card > .ant-tabs-content {
           margin-top: -8px;
         }
-        
         .card-container > .ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane {
           background: #fff;
           padding: 16px;
         }
-        
         .card-container > .ant-tabs-card > .ant-tabs-bar {
           border-color: #fff;
           text-align: right;
         }
-        
         .card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
           border-color: transparent;
           background: transparent;
         }
-        
         .card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
           border-color: #fff;
           background: #fff;
+        }
+        .blob-actions {
+          position: absolute;
+          right: 0;
+          top: 60px;
+          z-index: 10;
+          margin: 5px;
         }
         `}
         </style>
