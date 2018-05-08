@@ -131,7 +131,8 @@ To access GitHub repositories, you will be prompted to enter your _personal acce
 
 ## Adding SSH keys
 
-TODO
+The SSH keys are downloaded from GitHub on the first login and added to the Gitolite configuration.
+Apart from that, they can be added using Gitolite.
 
 ## Permission control
 
