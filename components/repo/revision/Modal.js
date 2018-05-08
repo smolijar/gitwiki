@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Badge, Modal, Input } from 'antd';
-import { values } from 'ramda';
+import { Button, Modal, Input } from 'antd';
 import { repoType, revisionType } from '../../../client/propTypes';
 
 const { TextArea } = Input;
@@ -33,13 +32,9 @@ export default class CommitModal extends React.Component {
   handleCancel = () => this.setState({ visible: false });
 
   render() {
-    const changes = values(this.props.repo.revision.changes).length;
-
     return (
       <div>
-        <a onClick={this.showModal}>
-          <Icon type="plus-circle-o" />Revision <Badge status={changes === 0 ? 'success' : 'warning'} />
-        </a>
+        <Button className="commit-btn" onClick={this.showModal} type="primary">Commit</Button>
         <Modal
           title="Basic Modal"
           visible={this.state.visible}
@@ -49,6 +44,12 @@ export default class CommitModal extends React.Component {
           <pre>{JSON.stringify(this.props.repo.revision.changes)}</pre>
           <TextArea ref={this.messageArea} placeholder="Commit message" autosize />
         </Modal>
+        <style jsx global>{`
+          .commit-btn {
+            margin: 15px 45px;
+          }
+        `}
+        </style>
       </div>
     );
   }
