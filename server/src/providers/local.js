@@ -1,5 +1,5 @@
 const {
-  map, compose, objOf, merge, zip, head, pipe, filter, propOr, last,
+  map, compose, objOf, merge, zip, head, pipe, filter, propOr, last, all, identity,
 } = require('ramda');
 const gitolite = require('../gitolite');
 const git = require('../git');
@@ -24,16 +24,27 @@ const getLocalRepoWd = repoPath => `/tmp/gitwiki/local/${repoPath}`;
 
 const getCredentialCallback = () => (url, userName) => Cred.sshKeyFromAgent(userName);
 
-const getRepository = (user, repoPath) => {
-  // TODO check gitolite authorization
-  const sshUser = getConfig('gitolite.user');
-  const uri = `${sshUser}@localhost:${repoPath}`;
-  const dest = getLocalRepoWd(repoPath);
-  return git.getRepo(uri, dest, getCredentialCallback());
+async function getRepository(user, repoPath) {
+  const allow = await gitolite.access(repoPath, user.username, 'R');
+  if (allow) {
+    const sshUser = getConfig('gitolite.user');
+    const uri = `${sshUser}@localhost:${repoPath}`;
+    const dest = getLocalRepoWd(repoPath);
+    return git.getRepo(uri, dest, getCredentialCallback());
+  }
+};
+
+async function commitAndPush(...args) {
+  const [repo, user, changes] = args;
+  const allow = await Promise.all(changes.map(({ path }) =>
+    gitolite.access(repo, user.username, 'W', path))).then(all(identity));
+  if (allow) {
+    return git.commitAndPush(args);
+  }
 };
 
 const provider = types.LOCAL;
 
 module.exports = {
-  listRepos, getRepository, provider, getCredentialCallback,
+  listRepos, getRepository, provider, getCredentialCallback, commitAndPush,
 };

@@ -27,7 +27,15 @@ module.exports = (config) => {
       const command = concat(commands.ACCESS, procArgs([repo, user, perm, ref]));
       return createCommand(command)()
         .then(always(true))
-        .catch(err => (err.code === 1 ? false : err));
+        .catch((err) => {
+          if (err.code === 1) {
+            console.log({
+              repo, user, perm, ref, res: false,
+            });
+            return false;
+          }
+          throw err;
+        });
     },
   };
 

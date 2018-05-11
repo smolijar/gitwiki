@@ -20,12 +20,11 @@ controller.get[api.tree] = (req, res) => {
     .catch(e => logger.error(e));
 };
 
-controller.put[api.tree] = (req) => {
+controller.put[api.tree] = async function putTree(req) {
   const { changes, message } = req.body;
-  providers.getProvider(req.params.provider)
-    .getRepository(req.user, req.params.name)
-    .then(repo => git.commitAndPush(repo, req.user, changes, message))
-    .catch(e => logger.error(e));
+  const provider = await providers.getProvider(req.params.provider);
+  const repo = await provider.getRepository(req.user, req.params.name);
+  return provider.commitAndPush(repo, req.user, changes, message);
 };
 
 controller.get[api.refs] = (req, res) => {

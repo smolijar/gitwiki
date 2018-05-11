@@ -28,5 +28,5 @@ const getRepository = (user, repoName) => getCredentialCallback(user).then((cred
 const provider = types.GITHUB;
 
 module.exports = {
-  listRepos, provider, getRepository, getCredentialCallback,
+  listRepos, provider, getRepository, getCredentialCallback, commitAndPush: git.commitAndPush,
 };
