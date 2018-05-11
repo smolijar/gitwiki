@@ -36,12 +36,11 @@ export default class CommitModal extends React.Component {
       <div>
         <Button className="commit-btn" onClick={this.showModal} type="primary">Commit</Button>
         <Modal
-          title="Basic Modal"
+          title="Commit"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <pre>{JSON.stringify(this.props.repo.revision.changes)}</pre>
           <TextArea ref={this.messageArea} placeholder="Commit message" autosize />
         </Modal>
         <style jsx global>{`
